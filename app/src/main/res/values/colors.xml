@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="bg_light">#FFF6F2</color>
-    <color name="bg_dark">#662B0F</color>
+    <color name="bg_dark">#33180C</color>
     <color name="skin_1">#F89B70</color>
     <color name="skin_2">#F6987E</color>
     <color name="orange_1">#F26B55</color>
