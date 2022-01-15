@@ -1,0 +1,12 @@
+<resources>
+    <color name="bg_light">#FFF6F2</color>
+    <color name="bg_dark">#33180C</color>
+    <color name="skin_1">#F89B70</color>
+    <color name="skin_2">#F6987E</color>
+    <color name="orange_1">#F26B55</color>
+    <color name="pink_1">#F25C68</color>
+    <color name="pink_2">#F25C68</color>
+    <color name="green_1">#06BF51</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
