@@ -7,6 +7,7 @@ import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.LockClock
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 
 @Composable
@@ -29,7 +30,7 @@ fun NavBar() {
                 onClick = { selectedItem = index },
                 colors = NavigationBarItemDefaults.colors(
                     indicatorColor = MaterialTheme.colorScheme.primary,
-                )
+                ),
             )
         }
     }
