@@ -1,0 +1,8 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.TheDailyQuran" parent="Theme.Material3.Dark">
+    <item name="statusBarBackground">@color/bg_dark</item>
+    <item name="android:statusBarColor">?attr/statusBarBackground</item>
+    <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
+</style>
+</resources>

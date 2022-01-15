@@ -1,0 +1,18 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.TheDailyQuran" parent="Theme.Material3.Light">
+        <item name="statusBarBackground">@color/bg_light</item>
+        <item name="android:statusBarColor">?attr/statusBarBackground</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="M">@color/black</item>
+
+    </style>
+
+    <style name="Theme.TheDailyQuran.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.TheDailyQuran.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.TheDailyQuran.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>
