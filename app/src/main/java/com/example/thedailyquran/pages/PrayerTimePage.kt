@@ -38,8 +38,10 @@ fun PrayerTimePage(modifier: Modifier = Modifier) {
     val sdf = SimpleDateFormat("dd/MMM/yyyy")
     val currentDate = sdf.format(Date())
     val list = mutableListOf<Prayer>()
+    val prayerName: Array<String> = arrayOf("Fajar", "Zuhr" , "Asr", "Maghrib", "Esha")
+    val prayerTime: Array<String> = arrayOf("5:30 A.M", "1:30 P.M", "3:30 P.M", "5:15 P.M", "6:45 P.M")
     for(i in 0 until 5) {
-        list.add(Prayer("Fajar", "5:30 A.M"))
+        list.add(Prayer(prayerName[i], prayerTime[i]))
     }
     MainLayout() {
         Column(
