@@ -1,15 +1,12 @@
 package com.example.thedailyquran
 
 import android.os.Bundle
-import android.widget.ProgressBar
-import android.widget.Space
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Done
@@ -19,23 +16,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
-import com.example.thedailyquran.components.NavBar
-import com.example.thedailyquran.components.TopBar
 import com.example.thedailyquran.layout.MainLayout
 import com.example.thedailyquran.ui.theme.TheDailyQuranTheme
 import com.example.thedailyquran.ui.theme.*
-import java.lang.reflect.Type
-import java.time.format.TextStyle
 
 class MainActivity : ComponentActivity() {
     @ExperimentalMaterial3Api
@@ -96,7 +85,7 @@ fun MainView(modifier: Modifier = Modifier) {
                     color = Color.Transparent
                 ) {
                     Text(
-                        text = "Overall ُُProgress",
+                        text = "Overall Progress",
                         style = MaterialTheme.typography.headlineLarge
                     )
                 }
