@@ -27,6 +27,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.thedailyquran.layout.MainLayout
 import com.example.thedailyquran.pages.HomePage
+import com.example.thedailyquran.pages.PrayerTimePage
 import com.example.thedailyquran.ui.theme.TheDailyQuranTheme
 import com.example.thedailyquran.ui.theme.*
 
@@ -46,8 +47,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TheDailyQuranApp(){
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "home") {
+    NavHost(navController = navController, startDestination = "prayerTime") {
         composable("home") { HomePage() }
+        composable("prayerTime") { PrayerTimePage() }
     }
 }
 
