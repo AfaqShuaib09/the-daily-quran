@@ -58,8 +58,6 @@ fun TheDailyQuranApp(){
 @Composable
 fun DefaultPreview() {
     TheDailyQuranTheme {
-        HomePage()
+        PrayerTimePage()
     }
 }
-
-
