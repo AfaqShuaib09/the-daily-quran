@@ -9,6 +9,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.thedailyquran.components.NavBar
 import com.example.thedailyquran.components.NavDrawer
 import com.example.thedailyquran.components.TopBar
@@ -19,7 +20,8 @@ import com.example.thedailyquran.ui.theme.white
 @Composable
 fun FABLayout(
     fab: @Composable () -> Unit,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
+    navController: NavHostController
 ) {
     var drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -27,7 +29,7 @@ fun FABLayout(
         topBar = {
             TopBar(drawerState = drawerState, scope = scope)
         },
-        bottomBar = { NavBar() },
+        bottomBar = { NavBar(navController = navController) },
         floatingActionButton = fab,
         floatingActionButtonPosition = FabPosition.End
     ) {

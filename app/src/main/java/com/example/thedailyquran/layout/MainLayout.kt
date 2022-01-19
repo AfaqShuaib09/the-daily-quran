@@ -9,6 +9,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.thedailyquran.components.NavBar
 import com.example.thedailyquran.components.NavDrawer
 import com.example.thedailyquran.components.TopBar
@@ -18,6 +19,7 @@ import com.example.thedailyquran.ui.theme.white
 @ExperimentalMaterial3Api
 @Composable
 fun MainLayout(
+    navController: NavHostController,
     content: @Composable () -> Unit
 ) {
     var drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -26,7 +28,7 @@ fun MainLayout(
         topBar = {
             TopBar(drawerState = drawerState, scope = scope)
         },
-        bottomBar = { NavBar() },
+        bottomBar = { NavBar(navController = navController) }
     ) {
         NavDrawer(drawerState = drawerState, scope = scope){
             Surface(

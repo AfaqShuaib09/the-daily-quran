@@ -24,12 +24,13 @@ import com.example.thedailyquran.ui.theme.*
 import com.example.thedailyquran.layout.FABLayout
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.navigation.NavHostController
 import com.example.thedailyquran.components.TasbeehGoal
 import com.example.thedailyquran.models.TasbeehGoal
 
 @ExperimentalMaterial3Api
 @Composable
-fun TasbeehPage(modifier: Modifier = Modifier) {
+fun TasbeehPage(modifier: Modifier = Modifier, navController: NavHostController) {
     val scrollState = rememberScrollState()
     val (currentGoalState, setCurrentGoalState) = remember { mutableStateOf(0) }
 
@@ -60,7 +61,7 @@ fun TasbeehPage(modifier: Modifier = Modifier) {
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = Color.Black
         )
-    }) {
+    }, navController = navController, content = {
         Column(
         ) {
             Surface(
@@ -90,7 +91,7 @@ fun TasbeehPage(modifier: Modifier = Modifier) {
                             Column(
                             ) {
                                 Text(
-                                    text = "Tasbeeh Goal",
+                                    text = "Tasbeeh Goals",
                                     style = MaterialTheme.typography.headlineLarge
                                 )
                             }
@@ -134,7 +135,7 @@ fun TasbeehPage(modifier: Modifier = Modifier) {
                 }
             }
         }
-    }
+    })
 }
 
 @Composable
