@@ -306,6 +306,7 @@ fun HomePage(modifier: Modifier = Modifier) {
                                     .align(Alignment.CenterHorizontally)
                                     .size(100.dp)
                             )
+
                         }
                     }
                 }
