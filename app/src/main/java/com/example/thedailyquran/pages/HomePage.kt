@@ -21,17 +21,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.thedailyquran.layout.MainLayout
 import com.example.thedailyquran.ui.theme.*
 import com.example.thedailyquran.R
 
 @ExperimentalMaterial3Api
 @Composable
-fun HomePage(modifier: Modifier = Modifier) {
+fun HomePage(modifier: Modifier = Modifier, navController: NavHostController) {
     var goalDone: Boolean = true
     val scrollState = rememberScrollState()
 
-    MainLayout() {
+    MainLayout(navController = navController, content = {
         Column(
             modifier = Modifier.verticalScroll(scrollState)
         ) {
@@ -78,7 +79,7 @@ fun HomePage(modifier: Modifier = Modifier) {
                         shape = RoundedCornerShape(15.dp),
                         shadowElevation = 4.dp,
                         contentColor = white,
-                        modifier = Modifier.clickable ( onClick = {})
+                        modifier = Modifier.clickable(onClick = {})
                     ) {
                         Surface(
                             modifier = Modifier
@@ -147,7 +148,7 @@ fun HomePage(modifier: Modifier = Modifier) {
                             color = Color.Transparent
                         ) {
                             Surface(
-                                color = Color(255,255,255, 0x33),
+                                color = Color(255, 255, 255, 0x33),
                                 shape = CircleShape,
                                 contentColor = white,
 
@@ -239,7 +240,7 @@ fun HomePage(modifier: Modifier = Modifier) {
                                     modifier = Modifier.align(Alignment.CenterHorizontally)
                                 )
                                 Spacer(modifier = Modifier.size(25.dp))
-                                Row (
+                                Row(
                                     modifier = Modifier.align(Alignment.CenterHorizontally),
                                     verticalAlignment = Alignment.CenterVertically
                                 )
@@ -312,5 +313,5 @@ fun HomePage(modifier: Modifier = Modifier) {
                 }
             }
         }
-    }
+    })
 }
