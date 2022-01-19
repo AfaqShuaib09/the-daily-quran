@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 
 private val DarkColorPalette = darkColorScheme(
     primary = skin2,
-    onPrimary = pink1,
+    onPrimary = white,
     secondary = orange1,
     onSecondary = pink2,
     background = bgDark,
@@ -16,7 +16,7 @@ private val DarkColorPalette = darkColorScheme(
 
 private val LightColorPalette = lightColorScheme(
     primary = skin2,
-    onPrimary = pink1,
+    onPrimary = white,
     secondary = orange1,
     onSecondary = pink2,
     background = bgLight,
