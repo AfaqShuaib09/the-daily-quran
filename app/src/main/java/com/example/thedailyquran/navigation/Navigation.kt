@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.thedailyquran.layout.MainLayout
 import com.example.thedailyquran.pages.HomePage
 import com.example.thedailyquran.pages.PrayerTimePage
+import com.example.thedailyquran.pages.QuranView
 import com.example.thedailyquran.pages.TasbeehPage
 
 @ExperimentalMaterial3Api
@@ -24,6 +25,9 @@ fun TheDailyQuranApp(){
         }
         composable(route = Screen.Tasbeeh.route){
             TasbeehPage(navController = navController)
+        }
+        composable(route = Screen.QuranView.route){
+            QuranView(navController = navController)
         }
         composable(route = Screen.Qiblah.route){
             MainLayout(navController = navController) {
