@@ -4,7 +4,7 @@
         <item name="statusBarBackground">@color/bg_light</item>
         <item name="android:statusBarColor">?attr/statusBarBackground</item>
         <item name="android:windowLightStatusBar" tools:targetApi="M">@color/black</item>
-
+        <item name="android:navigationBarColor">@color/bg_light</item>
     </style>
 
     <style name="Theme.TheDailyQuran.NoActionBar">

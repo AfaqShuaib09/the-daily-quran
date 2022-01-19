@@ -18,9 +18,10 @@ import com.example.thedailyquran.ui.theme.white
 
 @ExperimentalMaterial3Api
 @Composable
-fun MainLayout(
-    navController: NavHostController,
-    content: @Composable () -> Unit
+fun FABLayout(
+    fab: @Composable () -> Unit,
+    content: @Composable () -> Unit,
+    navController: NavHostController
 ) {
     var drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -28,7 +29,9 @@ fun MainLayout(
         topBar = {
             TopBar(drawerState = drawerState, scope = scope)
         },
-        bottomBar = { NavBar(navController = navController) }
+        bottomBar = { NavBar(navController = navController) },
+        floatingActionButton = fab,
+        floatingActionButtonPosition = FabPosition.End
     ) {
         NavDrawer(drawerState = drawerState, scope = scope){
             Surface(
