@@ -44,22 +44,6 @@ fun TasbeehPage(modifier: Modifier = Modifier, navController: NavHostController)
 
     val openDialog = remember { mutableStateOf(false) }
 
-
-//    var goals = remember {
-//        mutableStateListOf(
-//            TasbeehGoal("Dua 1", "سبحان الله", 33, 10),
-//            TasbeehGoal("Dua 2", "الحمد لله", 50, 25),
-//            TasbeehGoal("Dua 3", "الله أكبر", 90, 10),
-//            TasbeehGoal("Dua 4", "لَا إِلَٰهَ إِلَّا ٱللَّٰه", 10, 10),
-//            TasbeehGoal("Dua 5", "رَبَّنَا لاَ تَجْعَلْنَا مَعَ الْقَوْمِ الظَّالِمِين", 20, 6),
-//            TasbeehGoal(
-//                "Dua 6",
-//                "رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَتَوَفَّنَا مُسْلِمِين",
-//                27, 9
-//            )
-//        )
-//    }
-
     val context = LocalContext.current
 
     val goals = remember {
@@ -267,9 +251,12 @@ fun CreateGoalDialog(openDialog: MutableState<Boolean>, goalList: SnapshotStateL
                 TextButton(
                     onClick = {
                         if (newGoalDua.isBlank() || newGoalDua.isBlank() || newGoalProgress.isBlank()) {
-                            setNewGoalTitle("")
-                            setNewGoalDua("")
-                            setNewGoalProgress("")
+
+                            Toast.makeText(
+                                context,
+                                "Fields cannot be blank",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         } else {
                             val dbhelper = TasbeehGoalDB(context = context)
                             val db = dbhelper.writableDatabase
@@ -307,8 +294,8 @@ fun CreateGoalDialog(openDialog: MutableState<Boolean>, goalList: SnapshotStateL
                             setNewGoalTitle("")
                             setNewGoalDua("")
                             setNewGoalProgress("")
+                            openDialog.value = false
                         }
-                        openDialog.value = false
                     }
                 ) {
                     Text("Confirm")
