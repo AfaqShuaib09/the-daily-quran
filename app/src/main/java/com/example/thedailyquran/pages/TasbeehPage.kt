@@ -1,5 +1,9 @@
 package com.example.thedailyquran.pages
 
+import android.content.ContentValues
+import android.content.Context
+import android.provider.BaseColumns
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,10 +27,14 @@ import androidx.compose.ui.unit.dp
 import com.example.thedailyquran.ui.theme.*
 import com.example.thedailyquran.layout.FABLayout
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
+import com.example.thedailyquran.DBHelpers.TasbeehGoalDB
 import com.example.thedailyquran.components.TasbeehGoal
 import com.example.thedailyquran.models.TasbeehGoal
+import com.example.thedailyquran.schemas.TasbeehGoalContract
 
 @ExperimentalMaterial3Api
 @Composable
@@ -36,19 +44,26 @@ fun TasbeehPage(modifier: Modifier = Modifier, navController: NavHostController)
 
     val openDialog = remember { mutableStateOf(false) }
 
-    var goals = remember {
-        mutableStateListOf(
-            TasbeehGoal("Dua 1", "سبحان الله", 33, 10),
-            TasbeehGoal("Dua 2", "الحمد لله", 50, 25),
-            TasbeehGoal("Dua 3", "الله أكبر", 90, 10),
-            TasbeehGoal("Dua 4", "لَا إِلَٰهَ إِلَّا ٱللَّٰه", 10, 10),
-            TasbeehGoal("Dua 5", "رَبَّنَا لاَ تَجْعَلْنَا مَعَ الْقَوْمِ الظَّالِمِين", 20, 6),
-            TasbeehGoal(
-                "Dua 6",
-                "رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَتَوَفَّنَا مُسْلِمِين",
-                27, 9
-            )
-        )
+
+//    var goals = remember {
+//        mutableStateListOf(
+//            TasbeehGoal("Dua 1", "سبحان الله", 33, 10),
+//            TasbeehGoal("Dua 2", "الحمد لله", 50, 25),
+//            TasbeehGoal("Dua 3", "الله أكبر", 90, 10),
+//            TasbeehGoal("Dua 4", "لَا إِلَٰهَ إِلَّا ٱللَّٰه", 10, 10),
+//            TasbeehGoal("Dua 5", "رَبَّنَا لاَ تَجْعَلْنَا مَعَ الْقَوْمِ الظَّالِمِين", 20, 6),
+//            TasbeehGoal(
+//                "Dua 6",
+//                "رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَتَوَفَّنَا مُسْلِمِين",
+//                27, 9
+//            )
+//        )
+//    }
+
+    val context = LocalContext.current
+
+    val goals = remember {
+        generateList(context = context)
     }
 
     CreateGoalDialog(openDialog = openDialog, goals)
@@ -104,38 +119,91 @@ fun TasbeehPage(modifier: Modifier = Modifier, navController: NavHostController)
                             }
                             Spacer(modifier.size(20.dp))
                             Text(
-                                text = goals[currentGoalState].dua,
+                                text = when (goals.size) {
+                                    0 -> "No Goals"
+                                    else -> goals[currentGoalState].dua
+                                },
                                 style = MaterialTheme.typography.headlineSmall,
                                 modifier = Modifier.align(Alignment.End)
                             )
-                            Spacer(modifier.size(20.dp))
-                            LinearProgressIndicator(
-                                progress = goals[currentGoalState].getCurrProgress(),
-                                modifier = Modifier.align(Alignment.End),
-                                color = Color.White,
-                                backgroundColor = Color.Transparent.copy(alpha = 0.1f)
-                            )
+                            if (goals.size > 0) {
+                                Spacer(modifier.size(20.dp))
+                                LinearProgressIndicator(
+                                    progress = goals[currentGoalState].getCurrProgress(),
+                                    modifier = Modifier.align(Alignment.End),
+                                    color = Color.White,
+                                    backgroundColor = Color.Transparent.copy(alpha = 0.1f)
+                                )
+                            }
                         }
                     }
                 }
             }
             Spacer(modifier.size(20.dp))
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(15.dp)
-            ) {
-                items(goals.size) { index ->
-                    TasbeehGoal(
-                        title = goals[index].title,
-                        dua = goals[index].dua,
-                        progress = goals[index].getCurrProgress()
-                    )
+            if (goals.size > 0) {
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(15.dp)
+                ) {
+                    items(goals.size) { index ->
+                        TasbeehGoal(
+                            title = goals[index].title,
+                            dua = goals[index].dua,
+                            progress = goals[index].getCurrProgress()
+                        )
+                    }
+                    item() {
+                        Spacer(modifier.size(80.dp))
+                    }
                 }
-                item() {
-                    Spacer(modifier.size(80.dp))
+            } else {
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "No goals set. Add a new goal by clicking on the button below",
+                        style = MaterialTheme.typography.headlineLarge,
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
         }
     })
+}
+
+fun generateList(context: Context): SnapshotStateList<TasbeehGoal> {
+    val dbhelper = TasbeehGoalDB(context = context);
+    val db = dbhelper.readableDatabase;
+    val sortOrder = "${TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_ACTIVE} DESC"
+    val cursor = db.query(
+        TasbeehGoalContract.TasbeehGoalEntry.TABLE_NAME,   // The table to query
+        null,             // The array of columns to return (pass null to get all)
+        null,              // The columns for the WHERE clause
+        null,          // The values for the WHERE clause
+        null,                   // don't group the rows
+        null,                   // don't filter by row groups
+        sortOrder               // The sort order
+    );
+    val items = mutableStateListOf<TasbeehGoal>()
+    with(cursor) {
+        while (moveToNext()) {
+            val itemId = getInt(getColumnIndexOrThrow(BaseColumns._ID))
+            val itemTitle =
+                getString(getColumnIndexOrThrow(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_TITLE))
+            val itemDua =
+                getString(getColumnIndexOrThrow(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_DUA))
+            val itemGoal =
+                getInt(getColumnIndexOrThrow(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_GOAL))
+            val itemProgress =
+                getInt(getColumnIndexOrThrow(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_PROGRESS))
+            val itemActive =
+                getInt(getColumnIndexOrThrow(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_ACTIVE))
+            items.add(TasbeehGoal(itemId, itemTitle, itemDua, itemGoal, itemProgress, itemActive))
+        }
+    }
+    cursor.close()
+    return items;
 }
 
 @Composable
@@ -143,6 +211,7 @@ fun CreateGoalDialog(openDialog: MutableState<Boolean>, goalList: SnapshotStateL
     val (newGoalTitle, setNewGoalTitle) = remember { mutableStateOf("") }
     val (newGoalDua, setNewGoalDua) = remember { mutableStateOf("") }
     val (newGoalProgress, setNewGoalProgress) = remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     if (openDialog.value) {
         AlertDialog(
@@ -197,17 +266,49 @@ fun CreateGoalDialog(openDialog: MutableState<Boolean>, goalList: SnapshotStateL
             confirmButton = {
                 TextButton(
                     onClick = {
-                        openDialog.value = false
-                        goalList.add(
-                            TasbeehGoal(
-                                title = newGoalTitle,
-                                dua = newGoalDua,
-                                goal = newGoalProgress.toInt()
+                        if (newGoalDua.isBlank() || newGoalDua.isBlank() || newGoalProgress.isBlank()) {
+                            setNewGoalTitle("")
+                            setNewGoalDua("")
+                            setNewGoalProgress("")
+                        } else {
+                            val dbhelper = TasbeehGoalDB(context = context)
+                            val db = dbhelper.writableDatabase
+                            val values = ContentValues().apply {
+                                put(
+                                    TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_TITLE,
+                                    newGoalTitle
+                                )
+                                put(
+                                    TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_DUA,
+                                    newGoalDua
+                                )
+                                put(
+                                    TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_GOAL,
+                                    newGoalProgress.toInt()
+                                )
+                                put(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_PROGRESS, 0)
+                                put(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_ACTIVE, 0)
+                            }
+                            val newRowId = db?.insert(
+                                TasbeehGoalContract.TasbeehGoalEntry.TABLE_NAME,
+                                null,
+                                values
                             )
-                        )
-                        setNewGoalTitle("")
-                        setNewGoalDua("")
-                        setNewGoalProgress("")
+                            goalList.add(
+                                TasbeehGoal(
+                                    id = newRowId!!.toInt(),
+                                    title = newGoalTitle,
+                                    dua = newGoalDua,
+                                    goal = newGoalProgress.toInt(),
+                                    progress = 0,
+                                    active = 0
+                                )
+                            )
+                            setNewGoalTitle("")
+                            setNewGoalDua("")
+                            setNewGoalProgress("")
+                        }
+                        openDialog.value = false
                     }
                 ) {
                     Text("Confirm")
