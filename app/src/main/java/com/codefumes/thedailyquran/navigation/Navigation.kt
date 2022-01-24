@@ -7,10 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.codefumes.thedailyquran.layout.MainLayout
-import com.codefumes.thedailyquran.pages.HomePage
-import com.codefumes.thedailyquran.pages.PrayerTimePage
-import com.codefumes.thedailyquran.pages.QuranView
-import com.codefumes.thedailyquran.pages.TasbeehPage
+import com.codefumes.thedailyquran.pages.*
 
 @ExperimentalMaterial3Api
 @Composable
@@ -33,6 +30,9 @@ fun TheDailyQuranApp(){
             MainLayout(navController = navController) {
 
             }
+        }
+        composable(route = Screen.SupplicationsView.route){
+            SupplicationsPage(navController = navController)
         }
     }
 }

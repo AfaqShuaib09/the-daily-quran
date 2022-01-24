@@ -7,6 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Done
@@ -61,10 +62,19 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavHostController) {
                         .padding(15.dp),
                     color = Color.Transparent
                 ) {
-                    Text(
-                        text = "Overall Progress",
-                        style = MaterialTheme.typography.headlineLarge
-                    )
+                    Column {
+                        Text(
+                            text = "Overall Progress",
+                            style = MaterialTheme.typography.headlineLarge
+                        )
+                        Spacer(modifier.size(20.dp))
+                        LinearProgressIndicator(
+                            progress = 0.4f,
+                            modifier = Modifier.fillMaxWidth().align(Alignment.CenterHorizontally),
+                            color = Color.White,
+                            backgroundColor = Color.Transparent.copy(alpha = 0.1f)
+                        )
+                    }
                 }
             }
             Spacer(modifier.size(20.dp))
@@ -272,6 +282,7 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavHostController) {
                 shape = RoundedCornerShape(15.dp),
                 shadowElevation = 4.dp,
                 contentColor = white,
+                modifier = Modifier.clickable(onClick = { navController.navigate("supplicationsView") })
             ) {
                 Surface(
                     modifier = Modifier

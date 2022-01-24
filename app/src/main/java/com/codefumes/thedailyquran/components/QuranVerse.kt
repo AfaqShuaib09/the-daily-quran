@@ -29,7 +29,7 @@ fun QuranVerse(modifier: Modifier = Modifier, ayat: String, translation: String,
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                Text(text = "بَلٰی ٭  مَنۡ اَسۡلَمَ وَجۡہَہٗ  لِلّٰہِ وَ ہُوَ  مُحۡسِنٌ فَلَہٗۤ اَجۡرُہٗ عِنۡدَ رَبِّہٖ ۪ وَ لَا خَوۡفٌ عَلَیۡہِمۡ  وَ لَا ہُمۡ  یَحۡزَنُوۡنَ ﴿۱۱۲﴾", fontSize = 11.em, fontFamily = NooreHudaFont, lineHeight = 1.5.em, textAlign = TextAlign.Start)
+                Text(text = ayat, fontSize = 11.em, fontFamily = NooreHudaFont, lineHeight = 1.5.em, textAlign = TextAlign.Start)
             }
             Spacer(modifier.size(15.dp))
             Row(
