@@ -1,5 +1,9 @@
 package com.codefumes.thedailyquran.pages
 
+import android.content.Context
+import android.provider.BaseColumns
+import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,12 +26,27 @@ import com.codefumes.thedailyquran.ui.theme.*
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.rounded.*
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import com.codefumes.thedailyquran.DBHelpers.TasbeehGoalDB
+import com.codefumes.thedailyquran.R
+import com.codefumes.thedailyquran.models.TasbeehGoal
+import com.codefumes.thedailyquran.schemas.TasbeehGoalContract
 
 
 @ExperimentalMaterial3Api
 @Composable
-fun TasbeehCounterPage(modifier: Modifier = Modifier, navController: NavHostController) {
-    val currProg = remember { mutableStateOf(0.0) }
+fun TasbeehCounterPage(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    goalID: Int?
+) {
+    val context = LocalContext.current
+    val goal = getGoalById(context = context,goalID)
+    val currProg = remember { mutableStateOf(goal.progress) }
+    val degreeRotate = remember { mutableStateOf(0f) }
+    val progIndicator = remember { mutableStateOf(goal.getCurrProgress())}
     MainLayout(navController = navController, content = {
         Column(
         ) {
@@ -58,7 +77,7 @@ fun TasbeehCounterPage(modifier: Modifier = Modifier, navController: NavHostCont
                             Column(
                             ) {
                                 Text(
-                                    text = "Zikr 1",
+                                    text = goal.title,
                                     style = MaterialTheme.typography.headlineLarge
                                 )
                             }
@@ -71,7 +90,8 @@ fun TasbeehCounterPage(modifier: Modifier = Modifier, navController: NavHostCont
                             }
                             Spacer(modifier.size(20.dp))
                             Text(
-                                text = "رَبَّنَا ظَلَمْنَا أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ",
+                                modifier = Modifier.fillMaxWidth(),
+                                text = goal.dua,
                                 fontSize = 8.em,
                                 fontFamily = NooreHudaFont,
                                 lineHeight = 1.5.em,
@@ -84,11 +104,11 @@ fun TasbeehCounterPage(modifier: Modifier = Modifier, navController: NavHostCont
                                 modifier = Modifier.fillMaxWidth()
                             ) {
                                 Text(
-                                    text = "${(currProg.value).toInt()}/45",
+                                    text = "${(currProg.value).toInt()}/${goal.goal}",
                                     style = MaterialTheme.typography.headlineSmall
                                 )
                                 LinearProgressIndicator(
-                                    progress = (currProg.value / 45.0).toFloat(),
+                                    progress = progIndicator.value,
                                     color = Color.White,
                                     backgroundColor = Color.Transparent.copy(alpha = 0.1f)
                                 )
@@ -97,24 +117,99 @@ fun TasbeehCounterPage(modifier: Modifier = Modifier, navController: NavHostCont
                     }
                 }
             }
-            ElevatedButton(
-                onClick = { currProg.value = currProg.value + 1 },
-                colors = ButtonDefaults.elevatedButtonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
-                )
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                Icon(Icons.Rounded.Add, contentDescription = "Increment")
-            }
-            ElevatedButton(
-                onClick = { currProg.value = currProg.value + 1 },
-                colors = ButtonDefaults.elevatedButtonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
-                )
-            ) {
-                //Icon(Icons.Rounded., contentDescription = "Increment")
+                Box() {
+                    Image(
+                        painterResource(id = R.drawable.tasbih),
+                        contentDescription = "tasbih",
+                        modifier = Modifier
+                            .padding(start = 5.dp)
+                            .align(Alignment.Center)
+                            .rotate(degreeRotate.value)
+                            .size(200.dp)
+                    )
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        ElevatedButton(
+                            onClick = {
+                                if(currProg.value < goal.goal){
+                                    currProg.value = currProg.value + 1;
+                                    degreeRotate.value = degreeRotate.value + (360f / goal.goal);
+                                    goal.progress++;
+                                    progIndicator.value = goal.getCurrProgress();
+                                } else {
+                                    Toast.makeText(
+                                        context,
+                                        "Goal Already Completed",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            },
+                            colors = ButtonDefaults.elevatedButtonColors(
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                contentColor = MaterialTheme.colorScheme.onPrimary
+                            ),
+                            modifier = Modifier.padding(bottom = 35.dp, end = 0.dp)
+                        ) {
+                            Icon(Icons.Rounded.Add, contentDescription = "Increment")
+                        }
+//                        ElevatedButton(
+//                            onClick = { currProg.value = currProg.value + 1 },
+//                            colors = ButtonDefaults.elevatedButtonColors(
+//                                containerColor = MaterialTheme.colorScheme.primary,
+//                                contentColor = MaterialTheme.colorScheme.onPrimary
+//                            )
+//                        ) {
+//                            Icon(Icons.Rounded.Replay, contentDescription = "Increment")
+//                        }
+                    }
+                }
             }
         }
     })
+}
+
+fun getGoalById(context: Context, goalID: Int?): TasbeehGoal {
+    val dbhelper = TasbeehGoalDB(context = context);
+    val db = dbhelper.readableDatabase;
+    val selection = "${BaseColumns._ID} = ?"
+    val selectionArgs = arrayOf("$goalID")
+    val sortOrder = "${TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_ACTIVE} DESC"
+    val cursor = db.query(
+        TasbeehGoalContract.TasbeehGoalEntry.TABLE_NAME,   // The table to query
+        null,             // The array of columns to return (pass null to get all)
+        selection,              // The columns for the WHERE clause
+        selectionArgs,          // The values for the WHERE clause
+        null,                   // don't group the rows
+        null,                   // don't filter by row groups
+        sortOrder               // The sort order
+    );
+    with(cursor) {
+        if (moveToNext()) {
+            val itemId = getInt(getColumnIndexOrThrow(BaseColumns._ID))
+            val itemTitle =
+                getString(getColumnIndexOrThrow(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_TITLE))
+            val itemDua =
+                getString(getColumnIndexOrThrow(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_DUA))
+            val itemGoal =
+                getInt(getColumnIndexOrThrow(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_GOAL))
+            val itemProgress =
+                getInt(getColumnIndexOrThrow(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_PROGRESS))
+            val itemActive =
+                getInt(getColumnIndexOrThrow(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_ACTIVE))
+            val goal: TasbeehGoal =
+                (TasbeehGoal(itemId, itemTitle, itemDua, itemGoal, itemProgress, itemActive))
+            cursor.close()
+            return goal;
+        }
+    }
+    cursor.close()
+    return TasbeehGoal(0, "", "", 0, 0, 0);
 }

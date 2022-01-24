@@ -150,63 +150,6 @@ fun PrayerTimePage(modifier: Modifier = Modifier, navController: NavHostControll
                                     }
                                 }
                             }
-
-                            /*Row(
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Column(
-                                    verticalArrangement = Arrangement.Center
-                                ) {
-                                    Spacer(modifier.size(20.dp))
-                                    Text(
-                                        text = "Prayers Time",
-                                        style = MaterialTheme.typography.headlineLarge
-                                    )
-                                    Spacer(modifier.size(12.dp))
-                                    Text(
-                                        text = "نماز کے اوقات",
-                                        style = MaterialTheme.typography.headlineLarge
-                                    )
-                                    Spacer(modifier.size(25.dp))
-                                    Row() {
-                                        Image(
-                                            painterResource(id = R.drawable.ic_baseline_location_on_24),
-                                            contentDescription = "loc",
-                                            modifier = Modifier
-                                                .padding(0.dp)
-                                                .size(15.dp)
-                                        )
-                                        Text(
-                                            text = "Lahore",
-                                            style = MaterialTheme.typography.labelMedium
-                                        )
-                                    }
-                                }
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.Center
-                                ) {
-                                    Image(
-                                        painterResource(id = R.drawable.nabawi_mosque),
-                                        contentDescription = "nabwi_mosque",
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                            .size(100.dp)
-                                    )
-                                    Spacer(modifier.size(12.dp))
-                                    Row() {
-                                        Image(
-                                            painterResource(id = R.drawable.ic_baseline_date_range_24),
-                                            contentDescription = "Date icon",
-                                            modifier = Modifier
-                                                .size(15.dp)
-                                        )
-                                        Text(
-                                            text = currentDate,
-                                            style = MaterialTheme.typography.labelMedium
-                                        )
-                                    }
-                                }*/
                         }
 
                     }

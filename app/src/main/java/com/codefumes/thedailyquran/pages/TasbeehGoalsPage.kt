@@ -41,7 +41,6 @@ import com.codefumes.thedailyquran.schemas.TasbeehGoalContract
 @Composable
 fun TasbeehPage(modifier: Modifier = Modifier, navController: NavHostController) {
     val (currentGoalState, setCurrentGoalState) = remember { mutableStateOf(0) }
-
     val openDialog = remember { mutableStateOf(false) }
 
     val context = LocalContext.current
