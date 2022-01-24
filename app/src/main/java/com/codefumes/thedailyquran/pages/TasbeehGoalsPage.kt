@@ -30,6 +30,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.em
 import androidx.navigation.NavHostController
 import com.codefumes.thedailyquran.DBHelpers.TasbeehGoalDB
 import com.codefumes.thedailyquran.components.TasbeehGoal
@@ -39,7 +40,6 @@ import com.codefumes.thedailyquran.schemas.TasbeehGoalContract
 @ExperimentalMaterial3Api
 @Composable
 fun TasbeehPage(modifier: Modifier = Modifier, navController: NavHostController) {
-    val scrollState = rememberScrollState()
     val (currentGoalState, setCurrentGoalState) = remember { mutableStateOf(0) }
 
     val openDialog = remember { mutableStateOf(false) }
@@ -58,7 +58,7 @@ fun TasbeehPage(modifier: Modifier = Modifier, navController: NavHostController)
             icon = { Icon(Icons.Filled.Add, "Localized description") },
             text = { Text(text = "Create Goal") },
             containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = Color.Black
+            contentColor = MaterialTheme.colorScheme.onPrimary
         )
     }, navController = navController, content = {
         Column(
@@ -107,7 +107,10 @@ fun TasbeehPage(modifier: Modifier = Modifier, navController: NavHostController)
                                     0 -> "No Goals"
                                     else -> goals[currentGoalState].dua
                                 },
-                                style = MaterialTheme.typography.headlineSmall,
+                                fontSize = 8.em,
+                                fontFamily = NooreHudaFont,
+                                lineHeight = 1.5.em,
+                                textAlign = TextAlign.End,
                                 modifier = Modifier.align(Alignment.End)
                             )
                             if (goals.size > 0) {
@@ -130,7 +133,8 @@ fun TasbeehPage(modifier: Modifier = Modifier, navController: NavHostController)
                 ) {
                     items(goals.size) { index ->
                         TasbeehGoal(
-                            tasbeehGoal = goals[index]
+                            tasbeehGoal = goals[index],
+                            navController = navController
                         )
                     }
                     item() {

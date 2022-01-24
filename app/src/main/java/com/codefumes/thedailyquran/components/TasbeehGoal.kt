@@ -14,17 +14,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
+import androidx.navigation.NavHostController
 import com.codefumes.thedailyquran.models.TasbeehGoal
+import com.codefumes.thedailyquran.navigation.Screen
+import com.codefumes.thedailyquran.ui.theme.NooreHudaFont
 import com.codefumes.thedailyquran.ui.theme.skin1
 
 @Composable
-fun TasbeehGoal(tasbeehGoal: TasbeehGoal){
+fun TasbeehGoal(tasbeehGoal: TasbeehGoal, navController: NavHostController){
     val context = LocalContext.current;
     val interactionSource = remember { MutableInteractionSource()};
     Column(
         modifier = Modifier.clickable{
-
+            navController.navigate(Screen.TasbeehCounter.route)
         }
     ) {
 
@@ -34,7 +39,10 @@ fun TasbeehGoal(tasbeehGoal: TasbeehGoal){
             Spacer(Modifier.size(20.dp))
             Text(
                 text = tasbeehGoal.dua,
-                style = MaterialTheme.typography.headlineSmall,
+                fontSize = 7.em,
+                fontFamily = NooreHudaFont,
+                lineHeight = 1.5.em,
+                textAlign = TextAlign.End,
                 modifier = Modifier.align(Alignment.End)
             )
             Spacer(Modifier.size(10.dp))
