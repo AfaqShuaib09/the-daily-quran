@@ -32,7 +32,7 @@ import androidx.compose.ui.res.painterResource
 import com.codefumes.thedailyquran.DBHelpers.TasbeehGoalDB
 import com.codefumes.thedailyquran.R
 import com.codefumes.thedailyquran.models.TasbeehGoal
-import com.codefumes.thedailyquran.schemas.TasbeehGoalContract
+import com.codefumes.thedailyquran.schemas.Contracts
 
 
 @ExperimentalMaterial3Api
@@ -181,9 +181,9 @@ fun getGoalById(context: Context, goalID: Int?): TasbeehGoal {
     val db = dbhelper.readableDatabase;
     val selection = "${BaseColumns._ID} = ?"
     val selectionArgs = arrayOf("$goalID")
-    val sortOrder = "${TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_ACTIVE} DESC"
+    val sortOrder = "${Contracts.TasbeehGoalEntry.COLUMN_NAME_ACTIVE} DESC"
     val cursor = db.query(
-        TasbeehGoalContract.TasbeehGoalEntry.TABLE_NAME,   // The table to query
+        Contracts.TasbeehGoalEntry.TABLE_NAME,   // The table to query
         null,             // The array of columns to return (pass null to get all)
         selection,              // The columns for the WHERE clause
         selectionArgs,          // The values for the WHERE clause
@@ -195,15 +195,15 @@ fun getGoalById(context: Context, goalID: Int?): TasbeehGoal {
         if (moveToNext()) {
             val itemId = getInt(getColumnIndexOrThrow(BaseColumns._ID))
             val itemTitle =
-                getString(getColumnIndexOrThrow(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_TITLE))
+                getString(getColumnIndexOrThrow(Contracts.TasbeehGoalEntry.COLUMN_NAME_TITLE))
             val itemDua =
-                getString(getColumnIndexOrThrow(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_DUA))
+                getString(getColumnIndexOrThrow(Contracts.TasbeehGoalEntry.COLUMN_NAME_DUA))
             val itemGoal =
-                getInt(getColumnIndexOrThrow(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_GOAL))
+                getInt(getColumnIndexOrThrow(Contracts.TasbeehGoalEntry.COLUMN_NAME_GOAL))
             val itemProgress =
-                getInt(getColumnIndexOrThrow(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_PROGRESS))
+                getInt(getColumnIndexOrThrow(Contracts.TasbeehGoalEntry.COLUMN_NAME_PROGRESS))
             val itemActive =
-                getInt(getColumnIndexOrThrow(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_ACTIVE))
+                getInt(getColumnIndexOrThrow(Contracts.TasbeehGoalEntry.COLUMN_NAME_ACTIVE))
             val goal: TasbeehGoal =
                 (TasbeehGoal(itemId, itemTitle, itemDua, itemGoal, itemProgress, itemActive))
             cursor.close()

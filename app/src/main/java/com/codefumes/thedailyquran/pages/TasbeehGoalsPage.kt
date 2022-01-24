@@ -35,7 +35,7 @@ import androidx.navigation.NavHostController
 import com.codefumes.thedailyquran.DBHelpers.TasbeehGoalDB
 import com.codefumes.thedailyquran.components.TasbeehGoal
 import com.codefumes.thedailyquran.models.TasbeehGoal
-import com.codefumes.thedailyquran.schemas.TasbeehGoalContract
+import com.codefumes.thedailyquran.schemas.Contracts
 
 @ExperimentalMaterial3Api
 @Composable
@@ -160,9 +160,9 @@ fun TasbeehPage(modifier: Modifier = Modifier, navController: NavHostController)
 fun generateList(context: Context): SnapshotStateList<TasbeehGoal> {
     val dbhelper = TasbeehGoalDB(context = context);
     val db = dbhelper.readableDatabase;
-    val sortOrder = "${TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_ACTIVE} DESC"
+    val sortOrder = "${Contracts.TasbeehGoalEntry.COLUMN_NAME_ACTIVE} DESC"
     val cursor = db.query(
-        TasbeehGoalContract.TasbeehGoalEntry.TABLE_NAME,   // The table to query
+        Contracts.TasbeehGoalEntry.TABLE_NAME,   // The table to query
         null,             // The array of columns to return (pass null to get all)
         null,              // The columns for the WHERE clause
         null,          // The values for the WHERE clause
@@ -175,15 +175,15 @@ fun generateList(context: Context): SnapshotStateList<TasbeehGoal> {
         while (moveToNext()) {
             val itemId = getInt(getColumnIndexOrThrow(BaseColumns._ID))
             val itemTitle =
-                getString(getColumnIndexOrThrow(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_TITLE))
+                getString(getColumnIndexOrThrow(Contracts.TasbeehGoalEntry.COLUMN_NAME_TITLE))
             val itemDua =
-                getString(getColumnIndexOrThrow(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_DUA))
+                getString(getColumnIndexOrThrow(Contracts.TasbeehGoalEntry.COLUMN_NAME_DUA))
             val itemGoal =
-                getInt(getColumnIndexOrThrow(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_GOAL))
+                getInt(getColumnIndexOrThrow(Contracts.TasbeehGoalEntry.COLUMN_NAME_GOAL))
             val itemProgress =
-                getInt(getColumnIndexOrThrow(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_PROGRESS))
+                getInt(getColumnIndexOrThrow(Contracts.TasbeehGoalEntry.COLUMN_NAME_PROGRESS))
             val itemActive =
-                getInt(getColumnIndexOrThrow(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_ACTIVE))
+                getInt(getColumnIndexOrThrow(Contracts.TasbeehGoalEntry.COLUMN_NAME_ACTIVE))
             items.add(TasbeehGoal(itemId, itemTitle, itemDua, itemGoal, itemProgress, itemActive))
         }
     }
@@ -262,22 +262,22 @@ fun CreateGoalDialog(openDialog: MutableState<Boolean>, goalList: SnapshotStateL
                             val db = dbhelper.writableDatabase
                             val values = ContentValues().apply {
                                 put(
-                                    TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_TITLE,
+                                    Contracts.TasbeehGoalEntry.COLUMN_NAME_TITLE,
                                     newGoalTitle
                                 )
                                 put(
-                                    TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_DUA,
+                                    Contracts.TasbeehGoalEntry.COLUMN_NAME_DUA,
                                     newGoalDua
                                 )
                                 put(
-                                    TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_GOAL,
+                                    Contracts.TasbeehGoalEntry.COLUMN_NAME_GOAL,
                                     newGoalProgress.toInt()
                                 )
-                                put(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_PROGRESS, 0)
-                                put(TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_ACTIVE, 0)
+                                put(Contracts.TasbeehGoalEntry.COLUMN_NAME_PROGRESS, 0)
+                                put(Contracts.TasbeehGoalEntry.COLUMN_NAME_ACTIVE, 0)
                             }
                             val newRowId = db?.insert(
-                                TasbeehGoalContract.TasbeehGoalEntry.TABLE_NAME,
+                                Contracts.TasbeehGoalEntry.TABLE_NAME,
                                 null,
                                 values
                             )

@@ -4,18 +4,18 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
-import com.codefumes.thedailyquran.schemas.TasbeehGoalContract
+import com.codefumes.thedailyquran.schemas.Contracts
 
 private const val SQL_CREATE_ENTRIES =
-    "CREATE TABLE ${TasbeehGoalContract.TasbeehGoalEntry.TABLE_NAME} (" +
+    "CREATE TABLE ${Contracts.TasbeehGoalEntry.TABLE_NAME} (" +
             "${BaseColumns._ID} INTEGER PRIMARY KEY," +
-            "${TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_TITLE} TEXT," +
-            "${TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_DUA} TEXT, " +
-            "${TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_GOAL} INTEGER," +
-            "${TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_PROGRESS} INTEGER, " +
-            "${TasbeehGoalContract.TasbeehGoalEntry.COLUMN_NAME_ACTIVE} INTEGER)"
+            "${Contracts.TasbeehGoalEntry.COLUMN_NAME_TITLE} TEXT," +
+            "${Contracts.TasbeehGoalEntry.COLUMN_NAME_DUA} TEXT, " +
+            "${Contracts.TasbeehGoalEntry.COLUMN_NAME_GOAL} INTEGER," +
+            "${Contracts.TasbeehGoalEntry.COLUMN_NAME_PROGRESS} INTEGER, " +
+            "${Contracts.TasbeehGoalEntry.COLUMN_NAME_ACTIVE} INTEGER)"
 
-private const val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS ${TasbeehGoalContract.TasbeehGoalEntry.TABLE_NAME}"
+private const val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS ${Contracts.TasbeehGoalEntry.TABLE_NAME}"
 
 class TasbeehGoalDB(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     override fun onCreate(db: SQLiteDatabase) {

@@ -2,7 +2,7 @@ package com.codefumes.thedailyquran.schemas
 
 import android.provider.BaseColumns
 
-object TasbeehGoalContract {
+object Contracts {
     // Table contents are grouped together in an anonymous object.
     object TasbeehGoalEntry : BaseColumns {
         const val TABLE_NAME = "TasbeehGoal"
