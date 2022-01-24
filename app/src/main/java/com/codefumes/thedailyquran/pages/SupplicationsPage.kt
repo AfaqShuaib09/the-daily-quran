@@ -1,48 +1,44 @@
 package com.codefumes.thedailyquran.pages
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.ScrollableState
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.Done
-import androidx.compose.material.icons.rounded.NavigateNext
-import androidx.compose.material3.*
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.codefumes.thedailyquran.layout.MainLayout
-import com.codefumes.thedailyquran.ui.theme.*
 import com.codefumes.thedailyquran.R
-import org.intellij.lang.annotations.JdkConstants
+import com.codefumes.thedailyquran.layout.MainLayout
+import com.codefumes.thedailyquran.ui.theme.skin1
+import com.codefumes.thedailyquran.ui.theme.skin2
+import com.codefumes.thedailyquran.ui.theme.skin3
+import com.codefumes.thedailyquran.ui.theme.white
 import java.text.SimpleDateFormat
 import java.util.*
 
 @ExperimentalMaterial3Api
 @Composable
-fun PrayerTimePage(modifier: Modifier = Modifier, navController: NavHostController) {
+fun SupplicationsPage(modifier: Modifier = Modifier, navController: NavHostController) {
     val scrollState = rememberScrollState()
     val sdf = SimpleDateFormat("dd/MMM/yyyy")
     val currentDate = sdf.format(Date())
-    val list = mutableListOf<Prayer>()
+    val list = mutableListOf<Supplication>()
     val prayerName: Array<String> = arrayOf("Fajar", "Zuhr", "Asr", "Maghrib", "Esha")
     val prayerTime: Array<String> =
         arrayOf("5:30 A.M", "1:30 P.M", "3:30 P.M", "5:15 P.M", "6:45 P.M")
     for (i in 0 until 5) {
-        list.add(Prayer(prayerName[i], prayerTime[i]))
+        list.add(Supplication(prayerName[i], prayerTime[i]))
     }
     MainLayout(navController = navController, content = {
         Column(
@@ -82,7 +78,7 @@ fun PrayerTimePage(modifier: Modifier = Modifier, navController: NavHostControll
                                 ) {
                                     Spacer(modifier.size(20.dp))
                                     Text(
-                                        text = "Prayers Time",
+                                        text = "Supplications Time",
                                         style = MaterialTheme.typography.headlineLarge
                                     )
                                     Spacer(modifier.size(12.dp))
@@ -135,7 +131,7 @@ fun PrayerTimePage(modifier: Modifier = Modifier, navController: NavHostControll
                                 ) {
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier.padding(end=11.dp)
+                                        modifier = Modifier.padding(end=11.dp)
                                     ) {
                                         Image(
                                             painterResource(id = R.drawable.ic_baseline_date_range_24),
@@ -150,14 +146,13 @@ fun PrayerTimePage(modifier: Modifier = Modifier, navController: NavHostControll
                                     }
                                 }
                             }
-
                         }
 
                     }
                 }
             }
             Spacer(modifier.size(25.dp))
-            PrayersList(prayers = list)
+            SupplicationList(supplications = list)
         }
 
     }
@@ -165,22 +160,22 @@ fun PrayerTimePage(modifier: Modifier = Modifier, navController: NavHostControll
 }
 
 @Composable
-fun PrayersList(
-    prayers: List<Prayer>
+fun SupplicationList(
+    supplications: List<Supplication>
 ) {
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier.verticalScroll(scrollState)
     ) {
-        prayers.forEach {
-            prayer(prayer = it)
+        supplications.forEach {
+            supplication(supplication = it)
         }
     }
 }
 
 @Composable
-fun prayer(
-    prayer: Prayer
+fun supplication(
+    supplication: Supplication
 ) {
     Surface(
         color = skin2,
@@ -197,12 +192,12 @@ fun prayer(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = prayer.name,
+                text = supplication.name,
                 style = MaterialTheme.typography.headlineSmall,
                 //modifier = Modifier.padding(horizontal = 10.dp)
             )
             Text(
-                text = prayer.time,
+                text = supplication.time,
                 style = MaterialTheme.typography.headlineSmall
             )
         }
@@ -210,7 +205,7 @@ fun prayer(
 }
 
 
-data class Prayer(val name: String, val time_: String) {
-    val prayer: String = name;
+data class Supplication(val name: String, val time_: String) {
+    val supplication: String = name;
     val time: String = time_;
 }

@@ -2,6 +2,7 @@ package com.codefumes.thedailyquran.pages
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -45,91 +46,91 @@ fun QuranView(modifier: Modifier = Modifier, navController: NavHostController) {
     }
 
     MainLayout (navController = navController) {
-        Column (
-            modifier = Modifier.verticalScroll(scrollState)
+        LazyColumn (
         ) {
-            Spacer(modifier.size(20.dp))
-            Surface(
-                color = Color.Transparent,
-                shape = RoundedCornerShape(25.dp),
-                shadowElevation = 4.dp,
-                contentColor = white,
-            ) {
-                Box(
-                    modifier = Modifier.background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color(0xFFF89B70),
-                                Color(0xFFF57E86)
+            item(){
+                Spacer(modifier.size(20.dp))
+                Surface(
+                    color = Color.Transparent,
+                    shape = RoundedCornerShape(25.dp),
+                    shadowElevation = 4.dp,
+                    contentColor = white,
+                ) {
+                    Box(
+                        modifier = Modifier.background(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    Color(0xFFF89B70),
+                                    Color(0xFFF57E86)
+                                )
                             )
                         )
-                    )
-                ) {
-                    Surface(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(15.dp),
-                        color = Color.Transparent
                     ) {
-                        Row (
-                            horizontalArrangement = Arrangement.SpaceBetween
-                                ){
-                            Column() {
-                                Text(
-                                    text = "Al Rahman",
-                                    style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.ExtraBold),
-                                )
-                                Spacer(modifier.size(8.dp))
-                                Text(
-                                    text = "The Merciful",
-                                    style = MaterialTheme.typography.headlineSmall,
-                                )
-                                Spacer(modifier.size(34.dp))
-                                Text(
-                                    text = "78 Verses",
-                                    style = MaterialTheme.typography.bodyLarge,
-                                )
-                                Spacer(modifier.size(8.dp))
-                                Text(
-                                    text = "Madni Surah",
-                                    style = MaterialTheme.typography.bodyLarge,
-                                )
-                            }
-                            Column(
-                                horizontalAlignment = Alignment.End
-                            ) {
-                                Text(
-                                    text = "الرَّحۡمٰنِ",
-                                    style = MaterialTheme.typography.headlineLarge.copy(
-                                        fontFamily = NooreHudaFont,
-                                        fontSize = 13.em
-                                    ),
-                                )
+                        Surface(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(15.dp),
+                            color = Color.Transparent
+                        ) {
+                            Row (
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ){
+                                Column() {
+                                    Text(
+                                        text = "Al Rahman",
+                                        style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.ExtraBold),
+                                    )
+                                    Spacer(modifier.size(8.dp))
+                                    Text(
+                                        text = "The Merciful",
+                                        style = MaterialTheme.typography.headlineSmall,
+                                    )
+                                    Spacer(modifier.size(34.dp))
+                                    Text(
+                                        text = "78 Verses",
+                                        style = MaterialTheme.typography.bodyLarge,
+                                    )
+                                    Spacer(modifier.size(8.dp))
+                                    Text(
+                                        text = "Madni Surah",
+                                        style = MaterialTheme.typography.bodyLarge,
+                                    )
+                                }
+                                Column(
+                                    horizontalAlignment = Alignment.End
+                                ) {
+                                    Text(
+                                        text = "الرَّحۡمٰنِ",
+                                        style = MaterialTheme.typography.headlineLarge.copy(
+                                            fontFamily = NooreHudaFont,
+                                            fontSize = 13.em
+                                        ),
+                                    )
+                                }
                             }
                         }
                     }
                 }
-            }
-            Spacer(modifier.size(20.dp))
-            Button(
-                onClick = {
-                    setOpenDialog(true)
-                },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(vertical = 8.dp)
+                Spacer(modifier.size(20.dp))
+                Button(
+                    onClick = {
+                        setOpenDialog(true)
+                    },
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text = "Learn About This Surah ", style = MaterialTheme.typography.headlineSmall)
-                    Icon(Icons.Rounded.ArrowForwardIos , contentDescription = null, tint = white, modifier = Modifier.size(22.dp))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    ) {
+                        Text(text = "Learn About This Surah ", style = MaterialTheme.typography.headlineSmall)
+                        Icon(Icons.Rounded.ArrowForwardIos , contentDescription = null, tint = white, modifier = Modifier.size(22.dp))
+                    }
                 }
+                Spacer(modifier.size(35.dp))
+                QuranVerseDivider()
             }
-            Spacer(modifier.size(35.dp))
-            QuranVerseDivider()
-            surahRahmanVerseList.forEachIndexed{
-                index, item ->
-                    QuranVerse(ayat = item, translation = "Translation Text Here Translation Text Here Translation Text Here Translation Text Here ", verseNo = index + 1)
+            items(surahRahmanVerseList.size) { index ->
+                QuranVerse(ayat = surahRahmanVerseList[index], translation = "Translation Text Here Translation Text Here Translation Text Here Translation Text Here ", verseNo = index + 1)
             }
         }
 
@@ -140,7 +141,7 @@ fun QuranView(modifier: Modifier = Modifier, navController: NavHostController) {
                 onDismissRequest = { /*TODO*/ },
                 title = { Text(text = "سورۃ کا پس منظر", textAlign = TextAlign.Center) },
                 text = { Column(
-                    modifier = Modifier.verticalScroll(dialogScrollState)
+                    modifier = Modifier.verticalScroll(dialogScrollState).height(500.dp)
                 ) {
                     Text(text = surahInfo, fontSize = 4.em)
                 }},
