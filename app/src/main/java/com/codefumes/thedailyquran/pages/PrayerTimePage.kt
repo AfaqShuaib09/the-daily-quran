@@ -186,12 +186,12 @@ fun prayer(
         ) {
             Text(
                 text = prayer.name,
-                style = MaterialTheme.typography.headlineSmall,
+                style = MaterialTheme.typography.bodyLarge,
                 //modifier = Modifier.padding(horizontal = 10.dp)
             )
             Text(
                 text = prayer.time,
-                style = MaterialTheme.typography.headlineSmall
+                style = MaterialTheme.typography.bodyLarge
             )
         }
     }
