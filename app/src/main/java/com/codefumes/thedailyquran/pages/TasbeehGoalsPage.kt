@@ -40,7 +40,7 @@ import com.codefumes.thedailyquran.schemas.Contracts
 @ExperimentalMaterial3Api
 @Composable
 fun TasbeehPage(modifier: Modifier = Modifier, navController: NavHostController) {
-    val (currentGoalState, setCurrentGoalState) = remember { mutableStateOf(0) }
+    val (currentGoalState, setCurrentGoalState) = remember { mutableStateOf(-1) }
     val openDialog = remember { mutableStateOf(false) }
 
     val context = LocalContext.current
@@ -48,7 +48,9 @@ fun TasbeehPage(modifier: Modifier = Modifier, navController: NavHostController)
     val goals = remember {
         generateList(context = context)
     }
-
+    if (goals.size > 0 && goals[0].active == 1){
+        setCurrentGoalState(0);
+    }
     CreateGoalDialog(openDialog = openDialog, goals)
 
     FABLayout(fab = {
@@ -101,24 +103,31 @@ fun TasbeehPage(modifier: Modifier = Modifier, navController: NavHostController)
                                 )
                             }
                             Spacer(modifier.size(20.dp))
-                            Text(
-                                text = when (goals.size) {
-                                    0 -> "No Goals"
-                                    else -> goals[currentGoalState].dua
-                                },
-                                fontSize = 8.em,
-                                fontFamily = NooreHudaFont,
-                                lineHeight = 1.5.em,
-                                textAlign = TextAlign.End,
-                                modifier = Modifier.align(Alignment.End)
-                            )
-                            if (goals.size > 0) {
+                            if (currentGoalState == 0) {
+                                Text(
+                                    text = when (currentGoalState) {
+                                        0 -> goals[currentGoalState].dua
+                                        else -> "No Goals Set"
+                                    },
+                                    fontSize = 8.em,
+                                    fontFamily = NooreHudaFont,
+                                    lineHeight = 1.5.em,
+                                    textAlign = TextAlign.End,
+                                    modifier = Modifier.align(Alignment.End)
+                                )
                                 Spacer(modifier.size(20.dp))
                                 LinearProgressIndicator(
                                     progress = goals[currentGoalState].getCurrProgress(),
                                     modifier = Modifier.align(Alignment.End),
                                     color = Color.White,
                                     backgroundColor = Color.Transparent.copy(alpha = 0.1f)
+                                )
+                            } else {
+                                Text(
+                                    text = "No Goals Set",
+                                    textAlign = TextAlign.End,
+                                    modifier = Modifier.align(Alignment.End),
+                                    fontSize = 6.em
                                 )
                             }
                         }
@@ -147,7 +156,7 @@ fun TasbeehPage(modifier: Modifier = Modifier, navController: NavHostController)
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "No goals set. Add a new goal by clicking on the button below",
+                        text = "No goals. Add a new goal by clicking on the button below",
                         style = MaterialTheme.typography.headlineLarge,
                         textAlign = TextAlign.Center
                     )

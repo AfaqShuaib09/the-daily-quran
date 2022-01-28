@@ -53,12 +53,26 @@ import com.codefumes.thedailyquran.schemas.Contracts
 
 
 @Composable
-fun DropDown(icon: MutableState<ImageVector>, navController: NavHostController) {
+fun DropDown(
+    icon: MutableState<ImageVector>,
+    navController: NavHostController,
+    goalID: Int,
+    currProg: MutableState<Int>,
+    progIndicator: MutableState<Float>,
+    goal: TasbeehGoal
+) {
     val openDialog = remember { mutableStateOf(false) }
     val context = LocalContext.current
-    deleteDialog(openDialog = openDialog, navController)
+    deleteDialog(openDialog = openDialog, navController, goalID)
     var showMenu = remember { mutableStateOf(false) }
-    var tint = remember { mutableStateOf(Color.Black) }
+    var tint = remember {
+        mutableStateOf(
+            when (icon.value) {
+                Icons.Outlined.FavoriteBorder -> Color.Black
+                else -> Color.Red
+            }
+        )
+    }
     IconButton(onClick = {
         when (icon.value) {
             Icons.Outlined.FavoriteBorder -> {
@@ -91,7 +105,10 @@ fun DropDown(icon: MutableState<ImageVector>, navController: NavHostController) 
         onDismissRequest = { showMenu.value = false },
         modifier = Modifier.background(MaterialTheme.colorScheme.background)
     ) {
-        DropdownMenuItem(onClick = { /*TODO*/ }) {
+        DropdownMenuItem(onClick = {
+            currProg.value = 0; showMenu.value = false; progIndicator.value =
+            goal.getCurrProgress();
+        }) {
             Icon(Icons.Filled.Replay, "Reset")
             Text("Reset", Modifier.padding(start = 10.dp))
         }
@@ -99,6 +116,7 @@ fun DropDown(icon: MutableState<ImageVector>, navController: NavHostController) 
             if (!openDialog.value) {
                 openDialog.value = true;
             }
+            showMenu.value = false;
         }) {
             Icon(Icons.Filled.Delete, "Delete this goal")
             Text("Delete", Modifier.padding(start = 10.dp))
@@ -107,7 +125,8 @@ fun DropDown(icon: MutableState<ImageVector>, navController: NavHostController) 
 }
 
 @Composable
-fun deleteDialog(openDialog: MutableState<Boolean>, navController: NavHostController) {
+fun deleteDialog(openDialog: MutableState<Boolean>, navController: NavHostController, goalID: Int) {
+    val context = LocalContext.current;
     if (openDialog.value) {
         AlertDialog(
             onDismissRequest = {
@@ -126,6 +145,7 @@ fun deleteDialog(openDialog: MutableState<Boolean>, navController: NavHostContro
                 TextButton(
                     onClick = {
                         openDialog.value = false;
+                        deleteGoal(context = context, id = goalID);
                         navController.popBackStack();
                     }
                 ) {
@@ -156,11 +176,52 @@ fun TasbeehCounterPage(
     val goal = getGoalById(context = context, goalID)
     val currProg = remember { mutableStateOf(goal.progress) }
     val degreeRotate = remember { mutableStateOf(0f) }
-    val progIndicator = remember { mutableStateOf(goal.getCurrProgress()) }
-    val favIcon = remember { mutableStateOf(Icons.Outlined.FavoriteBorder) }
+    val progIndicator = remember { mutableStateOf(currProg.value.toFloat() / goal.goal.toFloat()) }
+    val favIcon = remember {
+        mutableStateOf(
+            when (goal.active) {
+                0 -> Icons.Outlined.FavoriteBorder
+                else -> Icons.Filled.Favorite
+            }
+        )
+    }
 
     BackHandler() {
-        Toast.makeText(context, "YES", Toast.LENGTH_LONG).show();
+        val dbHelper = TasbeehGoalDB(context = context)
+        val db = dbHelper.writableDatabase
+
+        // set all goals as inactive
+
+        val values1 = ContentValues().apply {
+            put(Contracts.TasbeehGoalEntry.COLUMN_NAME_ACTIVE, 0)
+        }
+
+        val query1 = db.update(
+            Contracts.TasbeehGoalEntry.TABLE_NAME,
+            values1,
+            null,
+            null
+        )
+
+        // New value for one column
+        val active = when (favIcon.value) {
+            Icons.Outlined.FavoriteBorder -> 0
+            else -> 1
+        }
+        val values2 = ContentValues().apply {
+            put(Contracts.TasbeehGoalEntry.COLUMN_NAME_ACTIVE, active)
+            put(Contracts.TasbeehGoalEntry.COLUMN_NAME_PROGRESS, currProg.value)
+        }
+
+        // Which row to update, based on the title
+        val selection = "${BaseColumns._ID} LIKE ?"
+        val selectionArgs = arrayOf(goalID.toString())
+        val query2 = db.update(
+            Contracts.TasbeehGoalEntry.TABLE_NAME,
+            values2,
+            selection,
+            selectionArgs
+        )
         navController.popBackStack()
     }
 
@@ -281,7 +342,7 @@ fun TasbeehCounterPage(
                 }
             }
         }
-    }, actions = { DropDown(favIcon, navController) })
+    }, actions = { DropDown(favIcon, navController, goalID as Int, currProg, progIndicator, goal) })
 }
 
 fun getGoalById(context: Context, goalID: Int?): TasbeehGoal {
@@ -320,4 +381,15 @@ fun getGoalById(context: Context, goalID: Int?): TasbeehGoal {
     }
     cursor.close()
     return TasbeehGoal(0, "", "", 0, 0, 0);
+}
+
+fun deleteGoal(context: Context, id: Int) {
+    val dbHelper = TasbeehGoalDB(context)
+    val db = dbHelper.writableDatabase
+    // Define 'where' part of query.
+    val selection = "${BaseColumns._ID} LIKE ?"
+    // Specify arguments in placeholder order.
+    val selectionArgs = arrayOf(id.toString())
+    // Issue SQL statement.
+    val deletedRows = db.delete(Contracts.TasbeehGoalEntry.TABLE_NAME, selection, selectionArgs)
 }
