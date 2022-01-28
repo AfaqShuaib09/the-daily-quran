@@ -30,12 +30,16 @@ import com.codefumes.thedailyquran.ui.theme.*
 fun AsmaUlHusnaPage(modifier: Modifier = Modifier, navController: NavHostController) {
     val list = mutableListOf<Asma>()
     val ArabicAsma: Array<String> = arrayOf(
-    "الرَّحْمَنُ", "الرَّحِيمُ", "الْمَلِكُ"
+    "الرَّحْمَنُ", "الرَّحِيمُ", "الْمَلِكُ", "الْقُدُّوسُ","السَّلاَمُ","الْمُؤْمِنُ", "الْمُهَيْمِنُ", "الْعَزِيزُ", "الْجَبَّارُ","الْمُتَكَبِّر","الْخَالِقُ",
+        "الْبَارِئُ", "الْمُصَوِّرُ", "الْغَفَّارُ", "الْقَهَّارُ", "الْوَهَّابُ", "الرَّزَّاقُ", "الْفَتَّاحُ", "اَلْعَلِيْمُ", "الْقَابِضُ"
     )
     val AsmaMeaning: Array<String> = arrayOf(
-        "The Beneficent","The Merciful"
+        "The Beneficent","The Merciful", "The King", "The Most Sacred","The Source of Peace","The Infuser of Faith",
+        "The Preserver of Safety","All Mighty","The Compeller","The Supreme", "The Creator","The Evolver", "The Fashioner",
+        "The Great Forgiver", "The All-Prevailing One", "The Supreme Bestower","The Provider","The Supreme Solver","The All-Knowing",
+        "The Withholder"
     )
-    for (i in 0 until 2) {
+    for (i in 0 until 10) {
         list.add(Asma(ArabicAsma[i],AsmaMeaning[i]))
     }
     MainLayout(navController = navController, content = {

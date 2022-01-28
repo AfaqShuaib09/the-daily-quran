@@ -34,9 +34,7 @@ fun TheDailyQuranApp(){
         }
 
         composable(route = Screen.Qiblah.route){
-            MainLayout(navController = navController) {
-
-            }
+            QiblahPage(navController = navController)
         }
         composable(route = Screen.SupplicationsView.route){
             SupplicationsPage(navController = navController)
