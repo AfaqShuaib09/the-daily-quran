@@ -26,8 +26,16 @@ fun TheDailyQuranApp(){
         composable(route = Screen.Tasbeeh.route){
             TasbeehPage(navController = navController)
         }
-        composable(route = Screen.QuranView.route){
-            QuranView(navController = navController)
+        composable(route = Screen.QuranView.route + "?surahNo={surahNo}",
+            arguments = listOf(navArgument("surahNo") { defaultValue = "1" }))
+        {
+            backStackEntry ->
+            QuranView(
+                navController = navController,
+                surahNo = Integer.parseInt(backStackEntry.arguments?.getString("surahNo")))
+        }
+        composable(route = Screen.SurahView.route){
+            SurahView(navController = navController)
         }
         composable(route = Screen.Qiblah.route){
             MainLayout(navController = navController) {
