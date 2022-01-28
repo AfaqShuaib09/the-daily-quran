@@ -36,7 +36,7 @@ fun SupplicationsPage(modifier: Modifier = Modifier, navController: NavHostContr
     val list = mutableListOf<Supplication>()
     val prayerName: Array<String> = arrayOf("Morning & Evening", "Home & Family Duas", "Food & Drink", "Travel Duas", "Sickness Duas", "Safety & Evil Eye", "Prayers & Daily Duas")
     val prayerTime: Array<String> =
-        arrayOf("صبح و شام کے ازکار", "گھر اور خاندان", "کھانے اور پینے کی دعائیں", "سفر کی دعائیں", "بیماری کی دعائیں", "ری نظر سے حفاظت کی دعائیں", "نماز اور روز کے ازکار")
+        arrayOf("صبح و شام کے ازکار", "گھر اور خاندان", "کھانے اور پینے کی دعائیں", "سفر کی دعائیں", "بیماری کی دعائیں", "بری نظر سے حفاظت کی دعائیں", "نماز اور روز کے ازکار")
     for (i in 0 until 7) {
         list.add(Supplication(prayerName[i], prayerTime[i]))
     }
