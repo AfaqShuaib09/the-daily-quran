@@ -1,14 +1,23 @@
 package com.codefumes.thedailyquran.pages
 
+import android.content.ContentValues
 import android.content.Context
 import android.provider.BaseColumns
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Replay
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -21,19 +30,140 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavHostController
-import com.codefumes.thedailyquran.layout.MainLayout
 import com.codefumes.thedailyquran.ui.theme.*
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.rounded.*
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import com.codefumes.thedailyquran.DBHelpers.TasbeehGoalDB
 import com.codefumes.thedailyquran.R
+import com.codefumes.thedailyquran.layout.ActionBarLayout
 import com.codefumes.thedailyquran.models.TasbeehGoal
 import com.codefumes.thedailyquran.schemas.Contracts
 
+
+@Composable
+fun DropDown(
+    icon: MutableState<ImageVector>,
+    navController: NavHostController,
+    goalID: Int,
+    currProg: MutableState<Int>,
+    progIndicator: MutableState<Float>,
+    goal: TasbeehGoal
+) {
+    val openDialog = remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    deleteDialog(openDialog = openDialog, navController, goalID)
+    var showMenu = remember { mutableStateOf(false) }
+    var tint = remember {
+        mutableStateOf(
+            when (icon.value) {
+                Icons.Outlined.FavoriteBorder -> Color.Black
+                else -> Color.Red
+            }
+        )
+    }
+    IconButton(onClick = {
+        when (icon.value) {
+            Icons.Outlined.FavoriteBorder -> {
+                icon.value = Icons.Filled.Favorite;
+                tint.value = Color.Red;
+                Toast.makeText(
+                    context,
+                    "Goal set as active",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            else -> {
+                icon.value = Icons.Outlined.FavoriteBorder;
+                tint.value = Color.Black;
+                Toast.makeText(
+                    context,
+                    "Goal set as inactive",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }) {
+        Icon(icon.value, contentDescription = "Set As Active", tint = tint.value)
+    }
+    IconButton(onClick = { showMenu.value = !(showMenu.value) }) {
+        Icon(Icons.Default.MoreVert, contentDescription = "Menu")
+    }
+    DropdownMenu(
+        expanded = showMenu.value,
+        onDismissRequest = { showMenu.value = false },
+        modifier = Modifier.background(MaterialTheme.colorScheme.background)
+    ) {
+        DropdownMenuItem(onClick = {
+            currProg.value = 0; showMenu.value = false; progIndicator.value =
+            goal.getCurrProgress();
+        }) {
+            Icon(Icons.Filled.Replay, "Reset")
+            Text("Reset", Modifier.padding(start = 10.dp))
+        }
+        DropdownMenuItem(onClick = {
+            if (!openDialog.value) {
+                openDialog.value = true;
+            }
+            showMenu.value = false;
+        }) {
+            Icon(Icons.Filled.Delete, "Delete this goal")
+            Text("Delete", Modifier.padding(start = 10.dp))
+        }
+    }
+}
+
+@Composable
+fun deleteDialog(openDialog: MutableState<Boolean>, navController: NavHostController, goalID: Int) {
+    val context = LocalContext.current;
+    if (openDialog.value) {
+        AlertDialog(
+            onDismissRequest = {
+                openDialog.value = false;
+            },
+            icon = {
+                Icon(Icons.Filled.Delete, "Localized description")
+            },
+            title = {
+                Text(text = "Delete Goal")
+            },
+            text = {
+                Text(text = "Are you sure you want to delete this goal?")
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        openDialog.value = false;
+                        deleteGoal(context = context, id = goalID);
+                        navController.popBackStack();
+                    }
+                ) {
+                    Text("Confirm")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        openDialog.value = false
+                    }
+                ) {
+                    Text("Dismiss")
+                }
+            }
+        )
+    }
+}
 
 @ExperimentalMaterial3Api
 @Composable
@@ -43,11 +173,59 @@ fun TasbeehCounterPage(
     goalID: Int?
 ) {
     val context = LocalContext.current
-    val goal = getGoalById(context = context,goalID)
+    val goal = getGoalById(context = context, goalID)
     val currProg = remember { mutableStateOf(goal.progress) }
     val degreeRotate = remember { mutableStateOf(0f) }
-    val progIndicator = remember { mutableStateOf(goal.getCurrProgress())}
-    MainLayout(navController = navController, content = {
+    val progIndicator = remember { mutableStateOf(currProg.value.toFloat() / goal.goal.toFloat()) }
+    val favIcon = remember {
+        mutableStateOf(
+            when (goal.active) {
+                0 -> Icons.Outlined.FavoriteBorder
+                else -> Icons.Filled.Favorite
+            }
+        )
+    }
+
+    BackHandler() {
+        val dbHelper = TasbeehGoalDB(context = context)
+        val db = dbHelper.writableDatabase
+
+        // set all goals as inactive
+
+        val values1 = ContentValues().apply {
+            put(Contracts.TasbeehGoalEntry.COLUMN_NAME_ACTIVE, 0)
+        }
+
+        val query1 = db.update(
+            Contracts.TasbeehGoalEntry.TABLE_NAME,
+            values1,
+            null,
+            null
+        )
+
+        // New value for one column
+        val active = when (favIcon.value) {
+            Icons.Outlined.FavoriteBorder -> 0
+            else -> 1
+        }
+        val values2 = ContentValues().apply {
+            put(Contracts.TasbeehGoalEntry.COLUMN_NAME_ACTIVE, active)
+            put(Contracts.TasbeehGoalEntry.COLUMN_NAME_PROGRESS, currProg.value)
+        }
+
+        // Which row to update, based on the title
+        val selection = "${BaseColumns._ID} LIKE ?"
+        val selectionArgs = arrayOf(goalID.toString())
+        val query2 = db.update(
+            Contracts.TasbeehGoalEntry.TABLE_NAME,
+            values2,
+            selection,
+            selectionArgs
+        )
+        navController.popBackStack()
+    }
+
+    ActionBarLayout(navController = navController, content = {
         Column(
         ) {
             Surface(
@@ -139,7 +317,7 @@ fun TasbeehCounterPage(
                     ) {
                         ElevatedButton(
                             onClick = {
-                                if(currProg.value < goal.goal){
+                                if (currProg.value < goal.goal) {
                                     currProg.value = currProg.value + 1;
                                     degreeRotate.value = degreeRotate.value + (360f / goal.goal);
                                     goal.progress++;
@@ -160,20 +338,11 @@ fun TasbeehCounterPage(
                         ) {
                             Icon(Icons.Rounded.Add, contentDescription = "Increment")
                         }
-//                        ElevatedButton(
-//                            onClick = { currProg.value = currProg.value + 1 },
-//                            colors = ButtonDefaults.elevatedButtonColors(
-//                                containerColor = MaterialTheme.colorScheme.primary,
-//                                contentColor = MaterialTheme.colorScheme.onPrimary
-//                            )
-//                        ) {
-//                            Icon(Icons.Rounded.Replay, contentDescription = "Increment")
-//                        }
                     }
                 }
             }
         }
-    })
+    }, actions = { DropDown(favIcon, navController, goalID as Int, currProg, progIndicator, goal) })
 }
 
 fun getGoalById(context: Context, goalID: Int?): TasbeehGoal {
@@ -212,4 +381,15 @@ fun getGoalById(context: Context, goalID: Int?): TasbeehGoal {
     }
     cursor.close()
     return TasbeehGoal(0, "", "", 0, 0, 0);
+}
+
+fun deleteGoal(context: Context, id: Int) {
+    val dbHelper = TasbeehGoalDB(context)
+    val db = dbHelper.writableDatabase
+    // Define 'where' part of query.
+    val selection = "${BaseColumns._ID} LIKE ?"
+    // Specify arguments in placeholder order.
+    val selectionArgs = arrayOf(id.toString())
+    // Issue SQL statement.
+    val deletedRows = db.delete(Contracts.TasbeehGoalEntry.TABLE_NAME, selection, selectionArgs)
 }
