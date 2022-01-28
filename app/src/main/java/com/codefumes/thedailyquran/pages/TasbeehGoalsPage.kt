@@ -264,6 +264,7 @@ fun CreateGoalDialog(openDialog: MutableState<Boolean>, goalList: SnapshotStateL
                                 put(
                                     Contracts.TasbeehGoalEntry.COLUMN_NAME_TITLE,
                                     newGoalTitle
+
                                 )
                                 put(
                                     Contracts.TasbeehGoalEntry.COLUMN_NAME_DUA,
