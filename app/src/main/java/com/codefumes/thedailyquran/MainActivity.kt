@@ -1,12 +1,14 @@
 package com.codefumes.thedailyquran
-
+import com.google.accompanist.pager.ExperimentalPagerApi
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.codefumes.thedailyquran.navigation.TheDailyQuranApp
+import com.codefumes.thedailyquran.pages.TasbeehCounterPage
 import com.codefumes.thedailyquran.ui.theme.TheDailyQuranTheme
 import android.view.animation.RotateAnimation
 
@@ -18,6 +20,10 @@ import androidx.compose.foundation.Image
 
 class MainActivity : ComponentActivity()  {
     var currentDegrees: Float = 0.0f;
+
+
+class MainActivity : ComponentActivity() {
+    @ExperimentalPagerApi
     @ExperimentalMaterial3Api
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +60,7 @@ class MainActivity : ComponentActivity()  {
 //    }
 //}
 
+@ExperimentalPagerApi
 @ExperimentalMaterial3Api
 @Preview(showBackground = true)
 @Composable
