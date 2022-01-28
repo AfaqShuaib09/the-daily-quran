@@ -76,7 +76,7 @@ fun PrayerTimePage(modifier: Modifier = Modifier, navController: NavHostControll
                                     Spacer(modifier.size(12.dp))
                                     Text(
                                         text = "نماز کے اوقات",
-                                        style = MaterialTheme.typography.headlineLarge
+                                        style = MaterialTheme.typography.headlineMedium
                                     )
                                 }
                                 Column(
@@ -187,7 +187,6 @@ fun prayer(
             Text(
                 text = prayer.name,
                 style = MaterialTheme.typography.bodyLarge,
-                //modifier = Modifier.padding(horizontal = 10.dp)
             )
             Text(
                 text = prayer.time,
