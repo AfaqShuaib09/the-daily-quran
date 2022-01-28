@@ -29,6 +29,10 @@ fun TheDailyQuranApp(){
         composable(route = Screen.SurahView.route){
             SurahView(navController = navController)
         }
+        composable(route = Screen.AsmaUlHusna.route){
+            AsmaUlHusnaPage(navController = navController)
+        }
+
         composable(route = Screen.Qiblah.route){
             MainLayout(navController = navController) {
 
