@@ -18,7 +18,7 @@ val items = listOf(
     Screen.Home,
     Screen.Qiblah,
     Screen.Prayer,
-    Screen.Tasbeeh
+    Screen.TasbeehView
 )
 
 @Composable
