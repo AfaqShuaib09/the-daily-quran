@@ -11,4 +11,5 @@ sealed class Screen(val route: String) {
     object SupplicationsView : Screen("supplicationsView")
     object SingleSupplicationsView : Screen("singleSupplicationView")
     object SurahView : Screen("surahView")
+    object AsmaUlHusna : Screen("asmaUlhusna")
 }

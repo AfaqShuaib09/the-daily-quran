@@ -26,6 +26,7 @@ import androidx.navigation.NavHostController
 import com.codefumes.thedailyquran.layout.MainLayout
 import com.codefumes.thedailyquran.ui.theme.*
 import com.codefumes.thedailyquran.R
+import com.codefumes.thedailyquran.navigation.Screen
 
 @ExperimentalMaterial3Api
 @Composable
@@ -238,7 +239,7 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavHostController) {
                         contentColor = white,
                     ) {
                         Surface(
-                            modifier = Modifier
+                            modifier = Modifier.clickable(onClick = { navController.navigate("asmaUlhusna") })
                                 .fillMaxWidth()
                                 .padding(15.dp),
                             color = Color.Transparent
