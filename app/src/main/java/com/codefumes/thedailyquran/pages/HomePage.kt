@@ -89,7 +89,7 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavHostController) {
                         shape = RoundedCornerShape(15.dp),
                         shadowElevation = 4.dp,
                         contentColor = white,
-                        modifier = Modifier.clickable(onClick = {})
+                        modifier = Modifier.clickable(onClick = {navController.navigate("quranView") })
                     ) {
                         Surface(
                             modifier = Modifier

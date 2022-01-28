@@ -34,10 +34,10 @@ fun SupplicationsPage(modifier: Modifier = Modifier, navController: NavHostContr
     val sdf = SimpleDateFormat("dd/MMM/yyyy")
     val currentDate = sdf.format(Date())
     val list = mutableListOf<Supplication>()
-    val prayerName: Array<String> = arrayOf("Fajar", "Zuhr", "Asr", "Maghrib", "Esha")
+    val prayerName: Array<String> = arrayOf("Morning & Evening", "Home & Family Duas", "Food & Drink", "Travel Duas", "Sickness Duas", "Safety & Evil Eye", "Prayers & Daily Duas")
     val prayerTime: Array<String> =
-        arrayOf("5:30 A.M", "1:30 P.M", "3:30 P.M", "5:15 P.M", "6:45 P.M")
-    for (i in 0 until 5) {
+        arrayOf("صبح و شام کے ازکار", "گھر اور خاندان", "کھانے اور پینے کی دعائیں", "سفر کی دعائیں", "بیماری کی دعائیں", "ری نظر سے حفاظت کی دعائیں", "نماز اور روز کے ازکار")
+    for (i in 0 until 7) {
         list.add(Supplication(prayerName[i], prayerTime[i]))
     }
     MainLayout(navController = navController, content = {
@@ -78,13 +78,13 @@ fun SupplicationsPage(modifier: Modifier = Modifier, navController: NavHostContr
                                 ) {
                                     Spacer(modifier.size(20.dp))
                                     Text(
-                                        text = "Supplications Time",
+                                        text = "Supplications",
                                         style = MaterialTheme.typography.headlineLarge
                                     )
                                     Spacer(modifier.size(12.dp))
                                     Text(
-                                        text = "نماز کے اوقات",
-                                        style = MaterialTheme.typography.headlineLarge
+                                        text = "مسنون دعائیں",
+                                        style = MaterialTheme.typography.headlineMedium
                                     )
                                 }
                                 Column(
@@ -92,58 +92,12 @@ fun SupplicationsPage(modifier: Modifier = Modifier, navController: NavHostContr
                                     verticalArrangement = Arrangement.Center
                                 ) {
                                     Image(
-                                        painterResource(id = R.drawable.nabawi_mosque),
-                                        contentDescription = "nabwi_mosque",
+                                        painterResource(id = R.drawable.supplication_vector),
+                                        contentDescription = "supplication",
                                         modifier = Modifier
                                             .align(Alignment.CenterHorizontally)
                                             .size(100.dp)
                                     )
-                                }
-                            }
-                            Spacer(modifier.size(15.dp))
-                            Row(
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.Center
-                                ) {
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically,
-                                    ) {
-                                        Image(
-                                            painterResource(id = R.drawable.ic_baseline_location_on_24),
-                                            contentDescription = "loc",
-                                            modifier = Modifier
-                                                .padding(0.dp)
-                                                .size(15.dp)
-                                        )
-                                        Text(
-                                            text = "Lahore",
-                                            style = MaterialTheme.typography.labelMedium
-                                        )
-                                    }
-                                }
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.Center
-                                ) {
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        modifier = Modifier.padding(end=11.dp)
-                                    ) {
-                                        Image(
-                                            painterResource(id = R.drawable.ic_baseline_date_range_24),
-                                            contentDescription = "Date icon",
-                                            modifier = Modifier
-                                                .size(15.dp)
-                                        )
-                                        Text(
-                                            text = currentDate,
-                                            style = MaterialTheme.typography.labelMedium
-                                        )
-                                    }
                                 }
                             }
                         }
@@ -193,12 +147,12 @@ fun supplication(
         ) {
             Text(
                 text = supplication.name,
-                style = MaterialTheme.typography.headlineSmall,
+                style = MaterialTheme.typography.bodyLarge,
                 //modifier = Modifier.padding(horizontal = 10.dp)
             )
             Text(
                 text = supplication.time,
-                style = MaterialTheme.typography.headlineSmall
+                style = MaterialTheme.typography.bodyLarge
             )
         }
     }
