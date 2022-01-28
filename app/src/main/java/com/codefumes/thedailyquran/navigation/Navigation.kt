@@ -25,14 +25,15 @@ fun TheDailyQuranApp() {
             PrayerTimePage(navController = navController)
         }
         composable(route = Screen.QuranView.route + "?surahNo={surahNo}",
-            arguments = listOf(navArgument("surahNo") { defaultValue = "1" }))
-        {
-            backStackEntry ->
+            arguments = listOf(navArgument("surahNo") { defaultValue = "1" })
+        )
+        { backStackEntry ->
             QuranView(
                 navController = navController,
-                surahNo = Integer.parseInt(backStackEntry.arguments?.getString("surahNo")))
+                surahNo = Integer.parseInt(backStackEntry.arguments?.getString("surahNo"))
+            )
         }
-        composable(route = Screen.SurahView.route){
+        composable(route = Screen.SurahView.route) {
             SurahView(navController = navController)
         }
         composable(route = Screen.Qiblah.route) {
@@ -47,18 +48,24 @@ fun TheDailyQuranApp() {
             composable(
                 route = Screen.TasbeehCounter.route,
                 arguments = listOf(navArgument("goalID") { type = NavType.IntType })
-            ) { backStackEntry  -> TasbeehCounterPage(navController = navController, goalID=backStackEntry.arguments?.getInt("goalID"))
+            ) { backStackEntry ->
+                TasbeehCounterPage(
+                    navController = navController,
+                    goalID = backStackEntry.arguments?.getInt("goalID")
+                )
             }
-        composable(route = Screen.SupplicationsView.route){
-            SupplicationsPage(navController = navController)
-        }
-        composable(route = Screen.SingleSupplicationsView.route + "?supplicationId={supplicationId}",
-            arguments = listOf(navArgument("supplicationId") { defaultValue = "1" })
-        ){
-            backStackEntry ->
+            composable(route = Screen.SupplicationsView.route) {
+                SupplicationsPage(navController = navController)
+            }
+            composable(
+                route = Screen.SingleSupplicationsView.route + "?supplicationId={supplicationId}",
+                arguments = listOf(navArgument("supplicationId") { defaultValue = "1" })
+            ) { backStackEntry ->
                 SingleSupplicationPage(
                     navController = navController,
-                    supplicationIndex = Integer.parseInt(backStackEntry.arguments?.getString("supplicationId")))
+                    supplicationIndex = Integer.parseInt(backStackEntry.arguments?.getString("supplicationId"))
+                )
+            }
         }
     }
 }
