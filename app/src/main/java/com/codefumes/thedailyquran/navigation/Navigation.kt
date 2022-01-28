@@ -10,7 +10,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.codefumes.thedailyquran.layout.MainLayout
 import com.codefumes.thedailyquran.pages.*
+import com.google.accompanist.pager.ExperimentalPagerApi
 
+@ExperimentalPagerApi
 @ExperimentalMaterial3Api
 @Composable
 fun TheDailyQuranApp() {
@@ -22,9 +24,16 @@ fun TheDailyQuranApp() {
         composable(route = Screen.Prayer.route) {
             PrayerTimePage(navController = navController)
         }
-
-        composable(route = Screen.QuranView.route) {
-            QuranView(navController = navController)
+        composable(route = Screen.QuranView.route + "?surahNo={surahNo}",
+            arguments = listOf(navArgument("surahNo") { defaultValue = "1" }))
+        {
+            backStackEntry ->
+            QuranView(
+                navController = navController,
+                surahNo = Integer.parseInt(backStackEntry.arguments?.getString("surahNo")))
+        }
+        composable(route = Screen.SurahView.route){
+            SurahView(navController = navController)
         }
         composable(route = Screen.Qiblah.route) {
             MainLayout(navController = navController) {
@@ -40,6 +49,16 @@ fun TheDailyQuranApp() {
                 arguments = listOf(navArgument("goalID") { type = NavType.IntType })
             ) { backStackEntry  -> TasbeehCounterPage(navController = navController, goalID=backStackEntry.arguments?.getInt("goalID"))
             }
+        composable(route = Screen.SupplicationsView.route){
+            SupplicationsPage(navController = navController)
+        }
+        composable(route = Screen.SingleSupplicationsView.route + "?supplicationId={supplicationId}",
+            arguments = listOf(navArgument("supplicationId") { defaultValue = "1" })
+        ){
+            backStackEntry ->
+                SingleSupplicationPage(
+                    navController = navController,
+                    supplicationIndex = Integer.parseInt(backStackEntry.arguments?.getString("supplicationId")))
         }
     }
 }

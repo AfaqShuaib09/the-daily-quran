@@ -10,8 +10,10 @@ import androidx.navigation.compose.rememberNavController
 import com.codefumes.thedailyquran.navigation.TheDailyQuranApp
 import com.codefumes.thedailyquran.pages.TasbeehCounterPage
 import com.codefumes.thedailyquran.ui.theme.TheDailyQuranTheme
+import com.google.accompanist.pager.ExperimentalPagerApi
 
 class MainActivity : ComponentActivity() {
+    @ExperimentalPagerApi
     @ExperimentalMaterial3Api
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +25,18 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+//@ExperimentalMaterial3Api
+//@Composable
+//fun TheDailyQuranApp() {
+//    val navController = rememberNavController()
+//    NavHost(navController = navController, startDestination = "tasbeeh") {
+//        composable("home") { HomePage(navController = navController) }
+//        composable("tasbeeh") { TasbeehPage(navController = navController) }
+//        composable("prayerTime") { PrayerTimePage(navController = navController) }
+//    }
+//}
+
+@ExperimentalPagerApi
 @ExperimentalMaterial3Api
 @Preview(showBackground = true)
 @Composable
