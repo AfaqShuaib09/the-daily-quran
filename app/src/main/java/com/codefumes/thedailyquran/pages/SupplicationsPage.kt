@@ -2,10 +2,10 @@ package com.codefumes.thedailyquran.pages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -16,143 +16,96 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.codefumes.thedailyquran.R
+import com.codefumes.thedailyquran.data.Supplication
+import com.codefumes.thedailyquran.data.getAllSupplications
+import com.codefumes.thedailyquran.data.getSupplicationsCount
 import com.codefumes.thedailyquran.layout.MainLayout
 import com.codefumes.thedailyquran.ui.theme.skin1
 import com.codefumes.thedailyquran.ui.theme.skin2
 import com.codefumes.thedailyquran.ui.theme.skin3
 import com.codefumes.thedailyquran.ui.theme.white
-import java.text.SimpleDateFormat
-import java.util.*
 
 @ExperimentalMaterial3Api
 @Composable
 fun SupplicationsPage(modifier: Modifier = Modifier, navController: NavHostController) {
-    val scrollState = rememberScrollState()
-    val sdf = SimpleDateFormat("dd/MMM/yyyy")
-    val currentDate = sdf.format(Date())
-    val list = mutableListOf<Supplication>()
-    val prayerName: Array<String> = arrayOf("Fajar", "Zuhr", "Asr", "Maghrib", "Esha")
-    val prayerTime: Array<String> =
-        arrayOf("5:30 A.M", "1:30 P.M", "3:30 P.M", "5:15 P.M", "6:45 P.M")
-    for (i in 0 until 5) {
-        list.add(Supplication(prayerName[i], prayerTime[i]))
-    }
+    val supplicationsDatabase = getAllSupplications()
+
     MainLayout(navController = navController, content = {
-        Column(
+        LazyColumn(
         ) {
-            Surface(
-                color = skin2,
-                shape = RoundedCornerShape(15.dp),
-                shadowElevation = 4.dp,
-                contentColor = white,
-            ) {
-                Box(
-                    modifier = Modifier
-                        .background(
-                            brush = Brush.verticalGradient(
-                                colors = listOf(
-                                    skin1,
-                                    skin3
+            item() {
+                Surface(
+                    color = skin2,
+                    shape = RoundedCornerShape(15.dp),
+                    shadowElevation = 4.dp,
+                    contentColor = white,
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        skin1,
+                                        skin3
+                                    )
                                 )
                             )
-                        )
-                ) {
-                    Surface(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(15.dp),
-                        color = Color.Transparent
                     ) {
-                        Column(
-                            modifier= Modifier.fillMaxWidth()
+                        Surface(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(15.dp),
+                            color = Color.Transparent
                         ) {
-                            Row(
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                modifier = Modifier.fillMaxWidth()
+                            Column(
+                                modifier= Modifier.fillMaxWidth()
                             ) {
-                                Column(
-                                    verticalArrangement = Arrangement.Center
+                                Row(
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    modifier = Modifier.fillMaxWidth()
                                 ) {
-                                    Spacer(modifier.size(20.dp))
-                                    Text(
-                                        text = "Supplications Time",
-                                        style = MaterialTheme.typography.headlineLarge
-                                    )
-                                    Spacer(modifier.size(12.dp))
-                                    Text(
-                                        text = "نماز کے اوقات",
-                                        style = MaterialTheme.typography.headlineLarge
-                                    )
-                                }
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.Center
-                                ) {
-                                    Image(
-                                        painterResource(id = R.drawable.nabawi_mosque),
-                                        contentDescription = "nabwi_mosque",
-                                        modifier = Modifier
-                                            .align(Alignment.CenterHorizontally)
-                                            .size(100.dp)
-                                    )
-                                }
-                            }
-                            Spacer(modifier.size(15.dp))
-                            Row(
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.Center
-                                ) {
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically,
+                                    Column(
+                                        verticalArrangement = Arrangement.Center
+                                    ) {
+                                        Spacer(modifier.size(20.dp))
+                                        Text(
+                                            text = "Supplications",
+                                            style = MaterialTheme.typography.headlineLarge
+                                        )
+                                        Spacer(modifier.size(12.dp))
+                                        Text(
+                                            text = "مسنون دعائں",
+                                            style = MaterialTheme.typography.headlineLarge
+                                        )
+                                    }
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.Center
                                     ) {
                                         Image(
-                                            painterResource(id = R.drawable.ic_baseline_location_on_24),
-                                            contentDescription = "loc",
+                                            painterResource(id = R.drawable.supplication_vector),
+                                            contentDescription = "supplication_vector",
                                             modifier = Modifier
-                                                .padding(0.dp)
-                                                .size(15.dp)
-                                        )
-                                        Text(
-                                            text = "Lahore",
-                                            style = MaterialTheme.typography.labelMedium
+                                                .align(Alignment.CenterHorizontally)
+                                                .size(100.dp)
                                         )
                                     }
                                 }
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.Center
-                                ) {
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        modifier = Modifier.padding(end=11.dp)
-                                    ) {
-                                        Image(
-                                            painterResource(id = R.drawable.ic_baseline_date_range_24),
-                                            contentDescription = "Date icon",
-                                            modifier = Modifier
-                                                .size(15.dp)
-                                        )
-                                        Text(
-                                            text = currentDate,
-                                            style = MaterialTheme.typography.labelMedium
-                                        )
-                                    }
-                                }
+                                Spacer(modifier.size(15.dp))
                             }
-                        }
 
+                        }
                     }
                 }
+                Spacer(modifier.size(25.dp))
             }
-            Spacer(modifier.size(25.dp))
-            SupplicationList(supplications = list)
+            items(getSupplicationsCount()) {
+                index -> SupplicationTile(supplication = supplicationsDatabase[index], navController = navController, index=index)
+            }
         }
 
     }
@@ -160,29 +113,17 @@ fun SupplicationsPage(modifier: Modifier = Modifier, navController: NavHostContr
 }
 
 @Composable
-fun SupplicationList(
-    supplications: List<Supplication>
-) {
-    val scrollState = rememberScrollState()
-    Column(
-        modifier = Modifier.verticalScroll(scrollState)
-    ) {
-        supplications.forEach {
-            supplication(supplication = it)
-        }
-    }
-}
-
-@Composable
-fun supplication(
-    supplication: Supplication
+fun SupplicationTile(
+    supplication: Supplication,
+    navController: NavHostController,
+    index: Int = 0
 ) {
     Surface(
         color = skin2,
         shape = RoundedCornerShape(10.dp),
         shadowElevation = 4.dp,
         contentColor = white,
-        modifier = Modifier.padding(bottom = 10.dp)
+        modifier = Modifier.padding(bottom = 10.dp).clickable(onClick = { navController.navigate("singleSupplicationView?supplicationId=$index") })
     ) {
 
         Row(
@@ -192,20 +133,11 @@ fun supplication(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = supplication.name,
+                text = supplication.title,
                 style = MaterialTheme.typography.headlineSmall,
-                //modifier = Modifier.padding(horizontal = 10.dp)
-            )
-            Text(
-                text = supplication.time,
-                style = MaterialTheme.typography.headlineSmall
+                textAlign = TextAlign.Right,
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }
-}
-
-
-data class Supplication(val name: String, val time_: String) {
-    val supplication: String = name;
-    val time: String = time_;
 }

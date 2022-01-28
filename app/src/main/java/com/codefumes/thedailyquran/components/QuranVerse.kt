@@ -29,7 +29,13 @@ fun QuranVerse(modifier: Modifier = Modifier, ayat: String, translation: String,
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                Text(text = ayat, fontSize = 11.em, fontFamily = NooreHudaFont, lineHeight = 1.5.em, textAlign = TextAlign.Start)
+                Text(
+                    text = ayat,
+                    fontSize = 10.em,
+                    lineHeight = 1.5.em,
+                    textAlign = TextAlign.Right,
+                    modifier = Modifier.fillMaxWidth(),
+                    fontFamily = NooreHudaFont)
             }
             Spacer(modifier.size(15.dp))
             Row(
@@ -48,9 +54,9 @@ fun QuranVerse(modifier: Modifier = Modifier, ayat: String, translation: String,
                         IconButton(onClick = { /*TODO*/ }) {
                             Icon(Icons.Rounded.Bookmark , contentDescription = null, tint = skin1, modifier = Modifier.size(35.dp))
                         }
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(Icons.Rounded.PlayArrow , contentDescription = null, tint = skin1, modifier = Modifier.size(50.dp))
-                        }
+//                        IconButton(onClick = { /*TODO*/ }) {
+//                            Icon(Icons.Rounded.PlayArrow , contentDescription = null, tint = skin1, modifier = Modifier.size(50.dp))
+//                        }
                     }
                 }
                 Column() {

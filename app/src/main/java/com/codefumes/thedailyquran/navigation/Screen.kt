@@ -7,4 +7,5 @@ sealed class Screen(val route: String) {
     object Tasbeeh : Screen("tasbeeh")
     object QuranView : Screen("quranView")
     object SupplicationsView : Screen("supplicationsView")
+    object SingleSupplicationsView : Screen("singleSupplicationView")
 }

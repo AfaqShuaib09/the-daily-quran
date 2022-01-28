@@ -6,9 +6,12 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.codefumes.thedailyquran.layout.MainLayout
 import com.codefumes.thedailyquran.pages.*
+import com.google.accompanist.pager.ExperimentalPagerApi
 
+@ExperimentalPagerApi
 @ExperimentalMaterial3Api
 @Composable
 fun TheDailyQuranApp(){
@@ -33,6 +36,14 @@ fun TheDailyQuranApp(){
         }
         composable(route = Screen.SupplicationsView.route){
             SupplicationsPage(navController = navController)
+        }
+        composable(route = Screen.SingleSupplicationsView.route + "?supplicationId={supplicationId}",
+            arguments = listOf(navArgument("supplicationId") { defaultValue = "1" })
+        ){
+            backStackEntry ->
+                SingleSupplicationPage(
+                    navController = navController,
+                    supplicationIndex = Integer.parseInt(backStackEntry.arguments?.getString("supplicationId")))
         }
     }
 }

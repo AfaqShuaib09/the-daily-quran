@@ -8,8 +8,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
 import com.codefumes.thedailyquran.navigation.TheDailyQuranApp
 import com.codefumes.thedailyquran.ui.theme.TheDailyQuranTheme
+import com.google.accompanist.pager.ExperimentalPagerApi
 
 class MainActivity : ComponentActivity() {
+    @ExperimentalPagerApi
     @ExperimentalMaterial3Api
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +34,7 @@ class MainActivity : ComponentActivity() {
 //    }
 //}
 
+@ExperimentalPagerApi
 @ExperimentalMaterial3Api
 @Preview(showBackground = true)
 @Composable
