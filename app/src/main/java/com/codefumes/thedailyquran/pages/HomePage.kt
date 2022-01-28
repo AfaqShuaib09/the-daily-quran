@@ -241,37 +241,37 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavHostController) {
                         Surface(
                             modifier = Modifier.clickable(onClick = { navController.navigate("asmaUlhusna") })
                                 .fillMaxWidth()
-                                .padding(15.dp),
+                                .padding(25.dp),
                             color = Color.Transparent
                         ) {
                             Column() {
                                 Text(
-                                    text = "Miracles from",
+                                    text = "أسماء الحسنى",
                                     style = MaterialTheme.typography.titleLarge,
                                     textAlign = TextAlign.Center,
                                     modifier = Modifier.align(Alignment.CenterHorizontally)
                                 )
-                                Spacer(modifier = Modifier.size(25.dp))
-                                Row(
-                                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                                    verticalAlignment = Alignment.CenterVertically
-                                )
-                                {
-                                    Text(
-                                        text = "Quran",
-                                        style = MaterialTheme.typography.headlineLarge,
-                                        textAlign = TextAlign.Center,
-                                        modifier = Modifier.padding(bottom = 10.dp)
-                                    )
-                                    Spacer(modifier = Modifier.size(14.dp))
-                                    Image(
-                                        painterResource(id = R.drawable.quran__1_),
-                                        contentDescription = "Quran",
-                                        modifier = Modifier
-                                            .size(40.dp)
-                                            .rotate(degrees = 10f)
-                                    )
-                                }
+//                                Spacer(modifier = Modifier.size(25.dp))
+//                                Row(
+//                                    modifier = Modifier.align(Alignment.CenterHorizontally),
+//                                    verticalAlignment = Alignment.CenterVertically
+//                                )
+//                                {
+//                                    Text(
+//                                        text = "Quran",
+//                                        style = MaterialTheme.typography.headlineLarge,
+//                                        textAlign = TextAlign.Center,
+//                                        modifier = Modifier.padding(bottom = 10.dp)
+//                                    )
+//                                    Spacer(modifier = Modifier.size(14.dp))
+//                                    Image(
+//                                        painterResource(id = R.drawable.quran__1_),
+//                                        contentDescription = "Quran",
+//                                        modifier = Modifier
+//                                            .size(40.dp)
+//                                            .rotate(degrees = 10f)
+//                                    )
+//                                }
                             }
                         }
                     }
