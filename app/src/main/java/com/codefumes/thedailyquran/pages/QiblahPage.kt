@@ -75,20 +75,14 @@ fun QiblahPage(modifier: Modifier = Modifier, navController: NavHostController) 
                                 ) {
                                     Spacer(modifier.size(20.dp))
                                     Text(
-                                        text = "Asma Ul Husna",
+                                        text = "Qiblah Direction",
                                         style = MaterialTheme.typography.headlineLarge
                                     )
                                     Spacer(modifier.size(10.dp))
                                     Text(
-                                        text = "اَلاسْمَاءُ الْحُسناى ",
+                                        text = "",
                                         style = MaterialTheme.typography.labelLarge
                                     )
-                                    Spacer(modifier.size(7.dp))
-                                    Text(
-                                        text = "99 Names of Allah",
-                                        style = MaterialTheme.typography.labelMedium
-                                    )
-
                                 }
                                 Column(
                                     horizontalAlignment = Alignment.CenterHorizontally,
