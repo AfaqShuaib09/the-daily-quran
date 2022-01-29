@@ -2,6 +2,7 @@ package com.codefumes.thedailyquran.navigation
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,43 +18,31 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 @Composable
 fun TheDailyQuranApp() {
     val navController = rememberNavController();
-    NavHost(navController = navController, startDestination = Screen.Home.route) {
-        composable(route = Screen.Home.route) {
-            HomePage(navController = navController)
-        }
+    NavHost(navController = navController, startDestination = Screen.HomeView.route) {
+
         composable(route = Screen.Prayer.route) {
             PrayerTimePage(navController = navController)
-        }
-        composable(route = Screen.QuranView.route + "?surahNo={surahNo}",
-            arguments = listOf(navArgument("surahNo") { defaultValue = "1" })
-        )
-        { backStackEntry ->
-            QuranView(
-                navController = navController,
-                surahNo = Integer.parseInt(backStackEntry.arguments?.getString("surahNo"))
-            )
-        }
-        composable(route = Screen.SurahView.route) {
-            SurahView(navController = navController)
-        }
-
-        composable(route = Screen.AsmaUlHusna.route){
-            AsmaUlHusnaPage(navController = navController)
         }
         composable(route = Screen.Qiblah.route){
             QiblahPage(navController = navController)
         }
-        navigation(startDestination = Screen.TasbeehGoals.route, route = Screen.TasbeehView.route) {
-            composable(route = Screen.TasbeehGoals.route) {
-                TasbeehPage(navController = navController)
+        navigation(startDestination = Screen.Home.route, route = Screen.HomeView.route){
+            composable(route = Screen.Home.route) {
+                HomePage(navController = navController)
             }
-            composable(
-                route = Screen.TasbeehCounter.route,
-                arguments = listOf(navArgument("goalID") { type = NavType.IntType })
-            ) { backStackEntry ->
-                TasbeehCounterPage(
+            composable(route = Screen.SurahView.route) {
+                SurahView(navController = navController)
+            }
+            composable(route = Screen.AsmaUlHusna.route){
+                AsmaUlHusnaPage(navController = navController)
+            }
+            composable(route = Screen.QuranView.route + "?surahNo={surahNo}",
+                arguments = listOf(navArgument("surahNo") { defaultValue = "1" })
+            )
+            { backStackEntry ->
+                QuranView(
                     navController = navController,
-                    goalID = backStackEntry.arguments?.getInt("goalID")
+                    surahNo = Integer.parseInt(backStackEntry.arguments?.getString("surahNo"))
                 )
             }
             composable(route = Screen.SupplicationsView.route) {
@@ -68,6 +57,21 @@ fun TheDailyQuranApp() {
                     supplicationIndex = Integer.parseInt(backStackEntry.arguments?.getString("supplicationId"))
                 )
             }
+        }
+        navigation(startDestination = Screen.TasbeehGoals.route, route = Screen.TasbeehView.route) {
+            composable(route = Screen.TasbeehGoals.route) {
+                TasbeehPage(navController = navController)
+            }
+            composable(
+                route = Screen.TasbeehCounter.route,
+                arguments = listOf(navArgument("goalID") { type = NavType.IntType })
+            ) { backStackEntry ->
+                TasbeehCounterPage(
+                    navController = navController,
+                    goalID = backStackEntry.arguments?.getInt("goalID")
+                )
+            }
+
         }
     }
 }

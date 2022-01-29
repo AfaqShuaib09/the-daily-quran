@@ -61,6 +61,7 @@ fun DropDown(
     progIndicator: MutableState<Float>,
     goal: TasbeehGoal
 ) {
+    val defaultTint = MaterialTheme.colorScheme.onBackground
     val openDialog = remember { mutableStateOf(false) }
     val context = LocalContext.current
     deleteDialog(openDialog = openDialog, navController, goalID)
@@ -68,7 +69,7 @@ fun DropDown(
     var tint = remember {
         mutableStateOf(
             when (icon.value) {
-                Icons.Outlined.FavoriteBorder -> Color.Black
+                Icons.Outlined.FavoriteBorder -> defaultTint
                 else -> Color.Red
             }
         )
@@ -86,7 +87,7 @@ fun DropDown(
             }
             else -> {
                 icon.value = Icons.Outlined.FavoriteBorder;
-                tint.value = Color.Black;
+                tint.value = defaultTint;
                 Toast.makeText(
                     context,
                     "Goal set as inactive",

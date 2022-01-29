@@ -28,11 +28,13 @@ import com.codefumes.thedailyquran.ui.theme.*
 import com.codefumes.thedailyquran.layout.FABLayout
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavHostController
 import com.codefumes.thedailyquran.DBHelpers.TasbeehGoalDB
+import com.codefumes.thedailyquran.R
 import com.codefumes.thedailyquran.components.TasbeehGoal
 import com.codefumes.thedailyquran.models.TasbeehGoal
 import com.codefumes.thedailyquran.schemas.Contracts
@@ -48,7 +50,7 @@ fun TasbeehPage(modifier: Modifier = Modifier, navController: NavHostController)
     val goals = remember {
         generateList(context = context)
     }
-    if (goals.size > 0 && goals[0].active == 1){
+    if (goals.size > 0 && goals[0].active == 1) {
         setCurrentGoalState(0);
     }
     CreateGoalDialog(openDialog = openDialog, goals)
@@ -88,19 +90,45 @@ fun TasbeehPage(modifier: Modifier = Modifier, navController: NavHostController)
                         color = Color.Transparent
                     ) {
                         Column() {
-                            Column(
+//                            Column(
+//                            ) {
+//                                Text(
+//                                    text = "Tasbeeh Goals",
+//                                    style = MaterialTheme.typography.headlineLarge
+//                                )
+//                            }
+//                            Spacer(modifier.size(20.dp))
+//                            Column() {
+//                                Text(
+//                                    text = "Your Current Goal:",
+//                                    style = MaterialTheme.typography.headlineSmall
+//                                )
+//                            }
+                            Row(
+                                modifier= Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(
-                                    text = "Tasbeeh Goals",
-                                    style = MaterialTheme.typography.headlineLarge
-                                )
-                            }
-                            Spacer(modifier.size(20.dp))
-                            Column() {
-                                Text(
-                                    text = "Your Current Goal:",
-                                    style = MaterialTheme.typography.headlineSmall
-                                )
+                                Column() {
+                                    Text(
+                                        text = "Tasbeeh Goals",
+                                        style = MaterialTheme.typography.headlineLarge
+                                    )
+                                    Spacer(modifier.size(20.dp))
+                                    Text(
+                                        text = "Your Current Goal:",
+                                        style = MaterialTheme.typography.headlineSmall
+                                    )
+                                }
+                                Column() {
+                                    Image(
+                                        painterResource(id = R.drawable.tasbih_card_img),
+                                        contentDescription = "quran_icon",
+                                        modifier = Modifier
+                                            .align(Alignment.CenterHorizontally)
+                                            .size(100.dp)
+                                    )
+                                }
                             }
                             Spacer(modifier.size(20.dp))
                             if (currentGoalState == 0) {

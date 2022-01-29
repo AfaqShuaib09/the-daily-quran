@@ -1,10 +1,17 @@
 package com.codefumes.thedailyquran.pages
 
+import android.content.Context
 import android.content.Context.SENSOR_SERVICE
 import android.hardware.Sensor
+import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.hardware.SensorManager.SENSOR_DELAY_FASTEST
+import android.util.Log
 import android.widget.ImageView
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,8 +21,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -28,15 +39,15 @@ import com.codefumes.thedailyquran.ui.theme.skin1
 import com.codefumes.thedailyquran.ui.theme.skin2
 import com.codefumes.thedailyquran.ui.theme.skin3
 import com.codefumes.thedailyquran.ui.theme.white
+import com.codefumes.thedailyquran.util.SensorManagerUtil
 
 
 @ExperimentalMaterial3Api
 @Composable
 fun QiblahPage(modifier: Modifier = Modifier, navController: NavHostController) {
-    var sensorManager: SensorManager = LocalContext.current.getSystemService(SENSOR_SERVICE) as SensorManager;
-    var sensor: Sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-
-    var currentDegrees: Float
+    var context = LocalContext.current;
+    var currentDegreesState = remember { mutableStateOf(0.0f) };
+    var sensorUtil = SensorManagerUtil(context = context, currentDegreeState = currentDegreesState)
     MainLayout(navController = navController, content = {
         Column(
         ) {
@@ -79,10 +90,21 @@ fun QiblahPage(modifier: Modifier = Modifier, navController: NavHostController) 
                                         style = MaterialTheme.typography.headlineLarge
                                     )
                                     Spacer(modifier.size(10.dp))
-                                    Text(
-                                        text = "",
-                                        style = MaterialTheme.typography.labelLarge
-                                    )
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                    ) {
+                                        Image(
+                                            painterResource(id = R.drawable.ic_baseline_location_on_24),
+                                            contentDescription = "loc",
+                                            modifier = Modifier
+                                                .padding(0.dp)
+                                                .size(15.dp)
+                                        )
+                                        Text(
+                                            text = "Lahore",
+                                            style = MaterialTheme.typography.labelLarge
+                                        )
+                                    }
                                 }
                                 Column(
                                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -121,7 +143,7 @@ fun QiblahPage(modifier: Modifier = Modifier, navController: NavHostController) 
                                 )
                             )
                         )
-                ){
+                ) {
                     Column(
                         verticalArrangement = Arrangement.Center
                     ) {
@@ -132,6 +154,7 @@ fun QiblahPage(modifier: Modifier = Modifier, navController: NavHostController) 
                                 .align(Alignment.CenterHorizontally)
                                 .padding(10.dp)
                                 .size(300.dp)
+                                .rotate(currentDegreesState.value)
                         )
                     }
                 }
