@@ -48,7 +48,6 @@ fun QiblahPage(modifier: Modifier = Modifier, navController: NavHostController) 
     var context = LocalContext.current;
     var currentDegreesState = remember { mutableStateOf(0.0f) };
     var sensorUtil = SensorManagerUtil(context = context, currentDegreeState = currentDegreesState)
-    //var currentDegrees: Float
     MainLayout(navController = navController, content = {
         Column(
         ) {
@@ -91,10 +90,21 @@ fun QiblahPage(modifier: Modifier = Modifier, navController: NavHostController) 
                                         style = MaterialTheme.typography.headlineLarge
                                     )
                                     Spacer(modifier.size(10.dp))
-                                    Text(
-                                        text = "",
-                                        style = MaterialTheme.typography.labelLarge
-                                    )
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                    ) {
+                                        Image(
+                                            painterResource(id = R.drawable.ic_baseline_location_on_24),
+                                            contentDescription = "loc",
+                                            modifier = Modifier
+                                                .padding(0.dp)
+                                                .size(15.dp)
+                                        )
+                                        Text(
+                                            text = "Lahore",
+                                            style = MaterialTheme.typography.labelLarge
+                                        )
+                                    }
                                 }
                                 Column(
                                     horizontalAlignment = Alignment.CenterHorizontally,

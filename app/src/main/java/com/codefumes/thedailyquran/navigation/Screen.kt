@@ -1,6 +1,7 @@
 package com.codefumes.thedailyquran.navigation
 
 sealed class Screen(val route: String) {
+    object HomeView : Screen("homeView")
     object Home : Screen("home")
     object Qiblah : Screen("qiblah")
     object Prayer : Screen("prayer")

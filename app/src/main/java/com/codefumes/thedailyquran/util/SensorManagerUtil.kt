@@ -19,13 +19,11 @@ class SensorManagerUtil(context: Context, currentDegreeState: MutableState<Float
         sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_FASTEST)
     }
     override fun onSensorChanged(event: SensorEvent?) {
-        Log.d("Qiblah", "Current Degrees: $currentDegrees");
         val degree = Math.round(event!!.values[0])
         currentDegrees.value = (-degree).toFloat()
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        TODO("Not yet implemented")
     }
 
     fun getRotation(): Float {
