@@ -37,7 +37,7 @@ fun ActionBarLayout(
         bottomBar = { NavBar(navController = navController) }
     ) {
         val context = LocalContext.current;
-        NavDrawer(drawerState = drawerState, scope = scope){
+        NavDrawer(drawerState = drawerState, scope = scope, navController = navController){
             Surface(
                 modifier = Modifier
                     .padding(horizontal = 17.dp)

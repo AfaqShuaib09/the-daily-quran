@@ -1,23 +1,21 @@
 package com.codefumes.thedailyquran.components
 
+
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.text.font.FontWeight
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @Composable
-fun TopBar(drawerState: DrawerState, scope: CoroutineScope) {
-//    var drawerState = rememberDrawerState(DrawerValue.Closed)
-//    val scope = rememberCoroutineScope()
-//    NavDrawer(drawerState = drawerState, scope = scope, content= content)
+fun TopEmptyBar(navController: NavHostController) {
     val scrollBehavior = remember { TopAppBarDefaults.pinnedScrollBehavior() }
     CenterAlignedTopAppBar(
         title = {
@@ -29,17 +27,10 @@ fun TopBar(drawerState: DrawerState, scope: CoroutineScope) {
         navigationIcon = {
             IconButton(
                 onClick = {
-                    when (drawerState.isOpen) {
-                        true -> {
-                            scope.launch { drawerState.close() }
-                        }
-                        else -> {
-                            scope.launch { drawerState.open() }
-                        }
-                    }
+                    navController.popBackStack();
                 },
             ) {
-                Icon(Icons.Rounded.Menu, contentDescription = null)
+                Icon(Icons.Rounded.ArrowBack, contentDescription = null)
             }
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
