@@ -28,11 +28,14 @@ fun MainLayout(
         topBar = {
             TopBar(drawerState = drawerState, scope = scope)
         },
-        bottomBar = { NavBar(navController = navController) }
-    ) {
-        NavDrawer(drawerState = drawerState, scope = scope){
+        bottomBar = { NavBar(navController = navController) },
+    )
+    {
+        NavDrawer(drawerState = drawerState, scope = scope, navController = navController) {
             Surface(
-                modifier = Modifier.padding(horizontal = 17.dp).padding(bottom = 80.dp),
+                modifier = Modifier
+                    .padding(horizontal = 17.dp)
+                    .padding(bottom = 80.dp),
                 color = Color.Transparent
             ) {
                 content()

@@ -58,6 +58,9 @@ fun TheDailyQuranApp() {
                 )
             }
         }
+        composable(route = Screen.About.route){
+            AboutPage(navController = navController)
+        }
         navigation(startDestination = Screen.TasbeehGoals.route, route = Screen.TasbeehView.route) {
             composable(route = Screen.TasbeehGoals.route) {
                 TasbeehPage(navController = navController)

@@ -13,29 +13,28 @@ import androidx.navigation.NavHostController
 import com.codefumes.thedailyquran.components.NavBar
 import com.codefumes.thedailyquran.components.NavDrawer
 import com.codefumes.thedailyquran.components.TopBar
+import com.codefumes.thedailyquran.components.TopEmptyBar
 import com.codefumes.thedailyquran.ui.theme.orange1
 import com.codefumes.thedailyquran.ui.theme.white
 
 @ExperimentalMaterial3Api
 @Composable
-fun FABLayout(
-    fab: @Composable () -> Unit,
-    content: @Composable () -> Unit,
-    navController: NavHostController
+fun EmptyLayout(
+    navController: NavHostController,
+    content: @Composable () -> Unit
 ) {
     var drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     Scaffold(
         topBar = {
-            TopBar(drawerState = drawerState, scope = scope)
-        },
-        bottomBar = { NavBar(navController = navController) },
-        floatingActionButton = fab,
-        floatingActionButtonPosition = FabPosition.End
+            TopEmptyBar(navController = navController)
+        }
     ) {
-        NavDrawer(drawerState = drawerState, scope = scope, navController = navController){
+        NavDrawer(drawerState = drawerState, scope = scope, navController=navController) {
             Surface(
-                modifier = Modifier.padding(horizontal = 17.dp).padding(bottom = 80.dp),
+                modifier = Modifier
+                    .padding(horizontal = 17.dp)
+                    .padding(bottom = 80.dp),
                 color = Color.Transparent
             ) {
                 content()
