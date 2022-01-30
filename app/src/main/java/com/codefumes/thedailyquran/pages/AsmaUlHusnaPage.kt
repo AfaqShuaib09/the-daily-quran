@@ -62,7 +62,7 @@ fun AsmaUlHusnaPage(modifier: Modifier = Modifier, navController: NavHostControl
         "The Distresser", "The Propitious", "The Light", "The Guide", "The Incomparable Originator",
         "The Everlasting", "The Inheritor", "Infallible Teacher", "The Forbearing"
     )
-    for (i in 0 until 50) {
+    for (i in 0 until 99) {
         list.add(Asma(ArabicAsma[i],AsmaMeaning[i]))
     }
     MainLayout(navController = navController, content = {
