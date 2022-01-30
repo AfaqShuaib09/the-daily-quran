@@ -251,27 +251,14 @@ fun HomePage(modifier: Modifier = Modifier, navController: NavHostController) {
                                     textAlign = TextAlign.Center,
                                     modifier = Modifier.align(Alignment.CenterHorizontally)
                                 )
-//                                Spacer(modifier = Modifier.size(25.dp))
-//                                Row(
-//                                    modifier = Modifier.align(Alignment.CenterHorizontally),
-//                                    verticalAlignment = Alignment.CenterVertically
-//                                )
-//                                {
-//                                    Text(
-//                                        text = "Quran",
-//                                        style = MaterialTheme.typography.headlineLarge,
-//                                        textAlign = TextAlign.Center,
-//                                        modifier = Modifier.padding(bottom = 10.dp)
-//                                    )
-//                                    Spacer(modifier = Modifier.size(14.dp))
-//                                    Image(
-//                                        painterResource(id = R.drawable.quran__1_),
-//                                        contentDescription = "Quran",
-//                                        modifier = Modifier
-//                                            .size(40.dp)
-//                                            .rotate(degrees = 10f)
-//                                    )
-//                                }
+                                Spacer(modifier = Modifier.size(14.dp))
+                                    Image(
+                                        painterResource(id = R.drawable.asma_ul_husna),
+                                        contentDescription = "Quran",
+                                        modifier = Modifier
+                                            .align(Alignment.CenterHorizontally)
+                                            .size(50.dp)
+                                    )
                             }
                         }
                     }
